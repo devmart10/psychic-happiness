@@ -1,6 +1,15 @@
 # Compiled class file
 *.class
 
+# Libgdx stuff
+*.iml
+*.iws
+*.ipr
+.gradle
+
+# IntelliJ stuff
+.idea
+
 # Log file
 *.log
 
