@@ -19,7 +19,6 @@ public class PlayState extends GameState {
 
     @Override
     public void update(float dt) {
-        camera.translate(player.getPosition());
         handleInput();
     }
 

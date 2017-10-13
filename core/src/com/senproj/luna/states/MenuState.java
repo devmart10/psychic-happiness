@@ -9,6 +9,7 @@ import com.senproj.luna.helpers.Settings;
 import com.senproj.luna.gui.GuiButton;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class MenuState extends GameState {
     private Texture background;
@@ -46,12 +47,12 @@ public class MenuState extends GameState {
                     switch (button.getTag()) {
                         case NEW_GAME_BUTTON:
                             gsm.setState(new PlayState(gsm));
-                            break;
+                            return;
                         case EXIT_GAME_BUTTON:
                             Gdx.app.exit();
-                            break;
+                            return;
                         default:
-                            break;
+                            return;
                     }
                 }
             }
@@ -61,8 +62,8 @@ public class MenuState extends GameState {
     @Override
     public void dispose() {
         background.dispose();
-        for (GuiButton button : buttons) {
-            button.dispose();
+        for (Iterator<GuiButton> itr = buttons.iterator(); itr.hasNext();) {
+            itr.next().dispose();
         }
     }
 }
