@@ -17,20 +17,6 @@ public class GuiButton {
     public GuiButton() { }
 
     /**
-     * Warning: Deprecated!!! Do not use. Create an enum for the button and use the constructor below.
-     * @param posX the x-coordinate of the center of the button
-     * @param posY the y-coordinate of the center of the button
-     * @param tex the texture to display for the button
-     */
-    public GuiButton(int posX, int posY, Texture tex) {
-        this.tex = tex;
-        this.tag = GuiButtonConstants.DEFAULT_BUTTON;
-        bottomLeft = new Vector2(posX - tex.getWidth() / 2.0f, posY - tex.getHeight() / 2.0f);
-        topRight = new Vector2(posX + tex.getWidth() / 2.0f, posY + tex.getWidth() / 2.0f);
-    }
-
-
-    /**
      * A standard GUI button
      * @param posX the x-coordinate of the center of the button
      * @param posY the y-coordinate of the center of the button
@@ -41,7 +27,7 @@ public class GuiButton {
         this.tex = tex;
         this.tag = tag;
         bottomLeft = new Vector2(posX - tex.getWidth() / 2.0f, posY - tex.getHeight() / 2.0f);
-        topRight = new Vector2(posX + tex.getWidth() / 2.0f, posY + tex.getWidth() / 2.0f);
+        topRight = new Vector2(posX + tex.getWidth() / 2.0f, posY + tex.getHeight() / 2.0f);
     }
 
     public boolean isClicked(int mouseX, int mouseY) {
@@ -49,7 +35,7 @@ public class GuiButton {
     }
 
     public void draw(SpriteBatch batch) {
-        batch.draw(tex, bottomLeft.x, bottomLeft.y, tex.getWidth(), tex.getHeight());
+        batch.draw(tex, bottomLeft.x, bottomLeft.y);
     }
 
     public GuiButtonConstants getTag() {

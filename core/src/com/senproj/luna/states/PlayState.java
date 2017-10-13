@@ -38,7 +38,9 @@ public class PlayState extends GameState {
 
     @Override
     public void handleInput() {
-
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            Gdx.app.exit();
+        }
     }
 
     @Override
