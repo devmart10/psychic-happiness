@@ -14,7 +14,9 @@ public class GuiButton {
     Vector2 bottomLeft;
     Vector2 topRight;
 
-    public GuiButton() { }
+    public GuiButton() {
+        Gdx.app.debug("GUI", String.format("Warning: GUI button default constructor used"));
+    }
 
     /**
      * A standard GUI button

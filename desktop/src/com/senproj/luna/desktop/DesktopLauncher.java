@@ -11,6 +11,7 @@ public class DesktopLauncher {
 		config.width = Settings.SCREEN_WIDTH;
 		config.height = Settings.SCREEN_HEIGHT;
 		config.forceExit = true;
+		config.fullscreen = true;
 		new LwjglApplication(new LunaGame(), config);
 	}
 }
