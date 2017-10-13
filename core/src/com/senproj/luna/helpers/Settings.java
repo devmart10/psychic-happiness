@@ -1,4 +1,4 @@
-package com.senproj.luna;
+package com.senproj.luna.helpers;
 
 public class Settings {
     public static final int SCREEN_WIDTH = 1920;

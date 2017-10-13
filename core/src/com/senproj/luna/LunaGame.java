@@ -1,5 +1,6 @@
 package com.senproj.luna;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -18,8 +19,13 @@ public class LunaGame extends ApplicationAdapter {
 	    gsm = new GameStateManager();
 	    gsm.pushState(new MenuState(gsm));
 		batch = new SpriteBatch();
-        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
+		init();
 	}
+
+	public void init() {
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
+    }
 
 	@Override
     /**

@@ -2,19 +2,19 @@ package com.senproj.luna.states;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.senproj.luna.Settings;
+import com.senproj.luna.helpers.Settings;
 
 public class PlayState extends GameState {
     private Texture gamemap;
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
-        gamemap = new Texture("game/map/background/temp_ingamemap");
+        gamemap = new Texture("game/map/background/temp_ingamemap.png");
     }
 
     @Override
     public void update(float dt) {
-
+        handleInput();
     }
 
     @Override
