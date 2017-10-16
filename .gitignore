@@ -13,8 +13,8 @@
 # Log file
 *.log
 
-# BlueJ files
-*.ctxt
+# Build files
+*/build
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
