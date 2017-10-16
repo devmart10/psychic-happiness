@@ -2,7 +2,6 @@ package com.senproj.luna.characters;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -16,28 +15,23 @@ import java.util.Map;
 
 public class Player {
 
-    private float speed;
+    private static final float SPEED = 150;
     private Vector2 pos, vel;
     private Map<AnimationState, Animation<TextureRegion>> animations;
     private AnimationState currentState;
     private float animationTime;
-    private Texture tex;
 
     public Player() {
         animations = new HashMap<>();
-        animations.put(AnimationState.IDLE, AnimationFactory.createAnimation(
-                "game/sprites/player/ss_luna_idle.png", 2, 1, 0.5f));
-        tex = new Texture("game/sprites/player/temp_sprite_player_front.png");
+        loadAnimations();
         pos = new Vector2(Settings.SCREEN_WIDTH / 2.0f, Settings.SCREEN_HEIGHT / 2.0f);
         vel = new Vector2(0, 0);
-        speed = 150;
-        currentState = AnimationState.IDLE;
         animationTime = 0;
     }
 
     public void update(float dt) {
         updateVelocity();
-        pos.add(vel.scl(dt * speed));
+        pos.add(vel.scl(dt * SPEED));
         animationTime += dt;
     }
 
@@ -47,7 +41,7 @@ public class Player {
     }
 
     public void dispose() {
-        tex.dispose();
+
     }
 
     public Vector2 getPosition() {
@@ -65,11 +59,29 @@ public class Player {
             vel.y = -1;
         else
             vel.y = 0;
-        if (Gdx.input.isKeyPressed(Input.Keys.A))
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             vel.x = -1;
-        else if (Gdx.input.isKeyPressed(Input.Keys.D))
+            currentState = AnimationState.WALK_LEFT;
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             vel.x = 1;
+            currentState = AnimationState.WALK_RIGHT;
+        }
         else
             vel.x = 0;
+        if (vel.isZero()) {
+            currentState = AnimationState.IDLE;
+        }
+    }
+
+    private void loadAnimations() {
+        currentState = AnimationState.IDLE;
+
+        animations.put(AnimationState.IDLE, AnimationFactory.createAnimation("game/sprites/player/ss_luna_idle.png",
+                2, 2, 0, 1, 1, 0, 0.5f));
+        animations.put(AnimationState.WALK_RIGHT, AnimationFactory.createAnimation("game/sprites/player/ss_luna_walking.png",
+                2, 2, 0, 1, 2, 0, 0.3f));
+        animations.put(AnimationState.WALK_LEFT, AnimationFactory.createAnimation("game/sprites/player/ss_luna_walking.png",
+                2, 2, 0, 1, 2, 1, 0.3f));
     }
 }
