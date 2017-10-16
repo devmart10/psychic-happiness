@@ -13,7 +13,7 @@ public class PlayState extends GameState {
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
-        gamemap = new GameMap();
+        gamemap = new GameMap(camera);
         player = new Player();
         camera.setToOrtho(false, Settings.SCREEN_WIDTH / 2.0f, Settings.SCREEN_HEIGHT / 2.0f);
     }
@@ -28,9 +28,10 @@ public class PlayState extends GameState {
 
     @Override
     public void render(SpriteBatch batch) {
+        gamemap.render();
+
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        gamemap.draw(batch);
         player.draw(batch);
         batch.end();
     }
