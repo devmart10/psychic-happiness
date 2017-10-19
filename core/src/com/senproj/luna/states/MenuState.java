@@ -3,20 +3,21 @@ package com.senproj.luna.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.senproj.luna.gui.GuiButton;
 import com.senproj.luna.gui.GuiButtonConstants;
 import com.senproj.luna.gui.GuiButtonFactory;
 import com.senproj.luna.helpers.Settings;
-import com.senproj.luna.gui.GuiButton;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class MenuState extends GameState {
+    private SpriteBatch batch;
     private Texture background;
     private ArrayList<GuiButton> buttons;
 
-    public MenuState(GameStateManager gsm) {
+    public MenuState(GameStateManager gsm, SpriteBatch batch) {
         super(gsm);
+        this.batch = batch;
         background = new Texture("menu/background/temp_mainmenu.png");
         buttons = new ArrayList<>();
         buttons.add(GuiButtonFactory.createButton(GuiButtonConstants.NEW_GAME_BUTTON));
@@ -46,7 +47,7 @@ public class MenuState extends GameState {
                 if (button.isClicked(mouseX, mouseY)) {
                     switch (button.getTag()) {
                         case NEW_GAME_BUTTON:
-                            gsm.setState(new PlayState(gsm));
+                            gsm.setState(new PlayState(gsm, batch));
                             return;
                         case EXIT_GAME_BUTTON:
                             Gdx.app.exit();
@@ -62,8 +63,8 @@ public class MenuState extends GameState {
     @Override
     public void dispose() {
         background.dispose();
-        for (Iterator<GuiButton> itr = buttons.iterator(); itr.hasNext();) {
-            itr.next().dispose();
+        for (GuiButton button : buttons) {
+            button.dispose();
         }
     }
 }

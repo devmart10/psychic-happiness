@@ -16,10 +16,16 @@ import java.util.Map;
 public class Player {
 
     private static final float SPEED = 150;
+    private float timer = 0f;
+    private int time = 0;
     private Vector2 pos, vel;
     private Map<AnimationState, Animation<TextureRegion>> animations;
     private AnimationState currentState;
     private float animationTime;
+
+    // temp
+    private int score;
+    private int health;
 
     public Player() {
         animations = new HashMap<>();
@@ -27,12 +33,39 @@ public class Player {
         pos = new Vector2(Settings.SCREEN_WIDTH / 2.0f, Settings.SCREEN_HEIGHT / 2.0f);
         vel = new Vector2(0, 0);
         animationTime = 0;
+
+        // temp
+        score = 0;
+        health = 100;
     }
 
     public void update(float dt) {
+        timer += dt;
+        float intervalInSeconds = 1f;
+        if (this.timer >= intervalInSeconds) {
+            time++;
+            this.timer = 0;
+
+            changeValues();
+        }
         updateVelocity();
         pos.add(vel.scl(dt * SPEED));
         animationTime += dt;
+    }
+
+    private void changeValues() {
+        score += 1;
+        if (health > 0) {
+            health -= 1;
+        }
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public void draw(SpriteBatch batch) {
@@ -53,22 +86,26 @@ public class Player {
     }
 
     private void updateVelocity() {
-        if (Gdx.input.isKeyPressed(Input.Keys.W))
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             vel.y = 1;
-        else if (Gdx.input.isKeyPressed(Input.Keys.S))
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             vel.y = -1;
-        else
+        }
+        else {
             vel.y = 0;
+        }
+
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             vel.x = -1;
             currentState = AnimationState.WALK_LEFT;
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             vel.x = 1;
             currentState = AnimationState.WALK_RIGHT;
-        }
-        else
+        } else {
             vel.x = 0;
+        }
+
         if (vel.isZero()) {
             currentState = AnimationState.IDLE;
         }
@@ -83,5 +120,13 @@ public class Player {
                 2, 2, 0, 1, 2, 0, 0.3f));
         animations.put(AnimationState.WALK_LEFT, AnimationFactory.createAnimation("game/sprites/player/ss_luna_walking.png",
                 2, 2, 0, 1, 2, 1, 0.3f));
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 }

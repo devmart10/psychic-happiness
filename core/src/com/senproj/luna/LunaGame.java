@@ -4,11 +4,9 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.senproj.luna.states.GameStateManager;
 import com.senproj.luna.states.MenuState;
-import com.senproj.luna.states.PlayState;
 
 public class LunaGame extends ApplicationAdapter {
     private GameStateManager gsm;
@@ -16,19 +14,20 @@ public class LunaGame extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-	    gsm = new GameStateManager();
-	    gsm.pushState(new MenuState(gsm));
 		batch = new SpriteBatch();
+		gsm = new GameStateManager();
+	    gsm.pushState(new MenuState(gsm, batch));
+//		gsm.pushState(new PlayState(gsm, batch));
 		init();
 	}
 
-	public void init() {
+	private void init() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
     }
 
 	@Override
-    /**
+    /*
      * This method effectively functions as the game loop.
      * Because it is called every frame, we use this to
      * both render the screen and update the game.
