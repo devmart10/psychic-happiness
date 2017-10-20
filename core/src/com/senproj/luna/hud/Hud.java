@@ -21,10 +21,10 @@ public class Hud {
     public Stage stage;
     private Viewport viewport;
 
-    private Label lblScoreText;
-    private Label lblScoreValue;
     private Label lblHealthText;
     private Label lblHealthValue;
+    private Label lblOxygenText;
+    private Label lblOxygenValue;
 
     public Hud(SpriteBatch batch, Player player) {
         this.player = player;
@@ -36,10 +36,10 @@ public class Hud {
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = getBitmapFont();
 
-        lblScoreText = new Label("Score:", labelStyle);
-        lblScoreValue = new Label("", labelStyle);
         lblHealthText = new Label("Health:", labelStyle);
         lblHealthValue = new Label("", labelStyle);
+        lblOxygenText = new Label("Oxygen:", labelStyle);
+        lblOxygenValue = new Label("", labelStyle);
 
         //table for  organizing hud labels
         Table table = new Table();
@@ -48,11 +48,11 @@ public class Hud {
         table.pad(5f);
         table.top().left();
 
-        table.add(lblScoreText).left();
-        table.add(lblScoreValue).expandX().left();
-        table.row();
         table.add(lblHealthText).left();
         table.add(lblHealthValue).expandX().left();
+        table.row();
+        table.add(lblOxygenText).left();
+        table.add(lblOxygenValue).expandX().left();
 
         stage.addActor(table);
     }
@@ -72,8 +72,8 @@ public class Hud {
     }
 
     public void update(float dt) {
-        lblScoreValue.setText(String.format("%06d", player.getScore()));
         lblHealthValue.setText(String.format("%03d", player.getHealth()));
+        lblOxygenValue.setText(String.format("%03d", player.getOxygen()));
     }
 
     public void draw(SpriteBatch batch) {

@@ -24,7 +24,7 @@ public class Player {
     private float animationTime;
 
     // temp
-    private int score;
+    private int oxygen;
     private int health;
 
     public Player() {
@@ -35,8 +35,8 @@ public class Player {
         animationTime = 0;
 
         // temp
-        score = 0;
-        health = 100;
+        oxygen = 20;
+        health = 50;
     }
 
     public void update(float dt) {
@@ -54,18 +54,29 @@ public class Player {
     }
 
     private void changeValues() {
-        score += 1;
-        if (health > 0) {
-            health -= 1;
+        if (oxygen > 0) {
+            oxygen -= 1;
+        }
+
+        int damage = 1;
+        if (oxygen == 0)
+        {
+            damage = 5;
+        }
+
+        if (health >= damage) {
+            health -= damage;
+        } else {
+            health = 0;
         }
     }
 
-    public int getScore() {
-        return score;
+    public int getOxygen() {
+        return oxygen;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setOxygen(int oxygen) {
+        this.oxygen = oxygen;
     }
 
     public void draw(SpriteBatch batch) {
