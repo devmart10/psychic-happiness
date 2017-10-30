@@ -1,7 +1,6 @@
 package com.senproj.luna.states;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public abstract class GameState {
     protected OrthographicCamera camera;
@@ -13,7 +12,7 @@ public abstract class GameState {
     }
 
     public abstract void update(float dt);
-    public abstract void render(SpriteBatch batch);
+    public abstract void render();
     public abstract void handleInput();
     public abstract void dispose();
 }

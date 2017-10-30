@@ -2,28 +2,25 @@ package com.senproj.luna.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.senproj.luna.characters.Player;
 import com.senproj.luna.helpers.Settings;
 import com.senproj.luna.hud.Hud;
 import com.senproj.luna.map.GameMap;
 
-public class PlayState extends GameState {
-    // may need reference later
-    private SpriteBatch batch;
+import static com.senproj.luna.LunaGame.batch;
 
+public class PlayState extends GameState {
     private GameMap gamemap;
     private Player player;
     private Hud hud;
 
-    public PlayState(GameStateManager gsm, SpriteBatch batch) {
+    public PlayState(GameStateManager gsm) {
         super(gsm);
         // might need later
-        this.batch = batch;
 
         gamemap = new GameMap(camera);
-        player = new Player();
-        hud = new Hud(batch, player);
+        player = new Player(gamemap);
+        hud = new Hud(player);
         camera.setToOrtho(false, Settings.SCREEN_WIDTH / 2.0f, Settings.SCREEN_HEIGHT / 2.0f);
     }
 
@@ -37,13 +34,11 @@ public class PlayState extends GameState {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void render() {
         gamemap.render();
 
         batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        player.draw(batch);
-        batch.end();
+        player.draw();
         hud.stage.draw();
     }
 

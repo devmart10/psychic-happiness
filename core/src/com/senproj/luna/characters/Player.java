@@ -3,19 +3,26 @@ package com.senproj.luna.characters;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.senproj.luna.animations.AnimationFactory;
 import com.senproj.luna.animations.AnimationState;
 import com.senproj.luna.helpers.Settings;
+import com.senproj.luna.map.GameMap;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.senproj.luna.LunaGame.batch;
+
 public class Player {
 
     private static final float SPEED = 150;
+    private GameMap gamemap;
     private float timer = 0f;
     private int time = 0;
     private Vector2 pos, vel;
@@ -26,8 +33,11 @@ public class Player {
     // temp
     private int oxygen;
     private int health;
+    private int width, height;
+    private Rectangle rectangle;
 
-    public Player() {
+    public Player(GameMap gamemap) {
+        this.gamemap = gamemap;
         animations = new HashMap<>();
         loadAnimations();
         pos = new Vector2(Settings.SCREEN_WIDTH / 2.0f, Settings.SCREEN_HEIGHT / 2.0f);
@@ -37,6 +47,9 @@ public class Player {
         // temp
         oxygen = 20;
         health = 50;
+        width = 32;
+        height = 32;
+        rectangle = new Rectangle(pos.x, pos.y, width, height);
     }
 
     public void update(float dt) {
@@ -49,8 +62,24 @@ public class Player {
             changeValues();
         }
         updateVelocity();
-        pos.add(vel.scl(dt * SPEED));
+        vel.scl(dt * SPEED);
+        pos.add(vel);
+        rectangle.setPosition(pos);
+
+        checkCollisions();
         animationTime += dt;
+    }
+
+    private void checkCollisions() {
+        Array<RectangleMapObject> objects = gamemap.getMap().getLayers().get("BuildingCollisions").getObjects().getByType(RectangleMapObject.class);
+        for (RectangleMapObject object : objects) {
+            Rectangle other = object.getRectangle();
+            if (Intersector.overlaps(rectangle, other)) {
+                // TODO: this is super lame
+                pos.sub(vel);
+                rectangle.setPosition(pos);
+            }
+        }
     }
 
     private void changeValues() {
@@ -58,16 +87,8 @@ public class Player {
             oxygen -= 1;
         }
 
-        int damage = 1;
-        if (oxygen == 0)
-        {
-            damage = 5;
-        }
-
-        if (health >= damage) {
-            health -= damage;
-        } else {
-            health = 0;
+        if (oxygen == 0 && health > 0) {
+            health -= 5;
         }
     }
 
@@ -75,13 +96,12 @@ public class Player {
         return oxygen;
     }
 
-    public void setOxygen(int oxygen) {
-        this.oxygen = oxygen;
-    }
-
-    public void draw(SpriteBatch batch) {
+    public void draw() {
+        batch.begin();
         TextureRegion tex = animations.get(currentState).getKeyFrame(animationTime, true);
-        batch.draw(tex, pos.x - tex.getRegionWidth() / 2.0f, pos.y - tex.getRegionHeight() / 2.0f);
+//        batch.draw(tex, pos.x - tex.getRegionWidth() / 2.0f, pos.y - tex.getRegionHeight() / 2.0f);
+        batch.draw(tex, rectangle.x, rectangle.y);
+        batch.end();
     }
 
     public void dispose() {
@@ -92,18 +112,12 @@ public class Player {
         return pos;
     }
 
-    public void setVelocity(Vector2 velocity) {
-        this.vel = velocity;
-    }
-
     private void updateVelocity() {
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             vel.y = 1;
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             vel.y = -1;
-        }
-        else {
+        } else {
             vel.y = 0;
         }
 
@@ -125,19 +139,25 @@ public class Player {
     private void loadAnimations() {
         currentState = AnimationState.IDLE;
 
-        animations.put(AnimationState.IDLE, AnimationFactory.createAnimation("game/sprites/player/ss_luna_idle.png",
-                2, 2, 0, 1, 1, 0, 0.5f));
-        animations.put(AnimationState.WALK_RIGHT, AnimationFactory.createAnimation("game/sprites/player/ss_luna_walking.png",
-                2, 2, 0, 1, 2, 0, 0.3f));
-        animations.put(AnimationState.WALK_LEFT, AnimationFactory.createAnimation("game/sprites/player/ss_luna_walking.png",
-                2, 2, 0, 1, 2, 1, 0.3f));
+        boolean debug = false;
+        if (debug) {
+            animations.put(AnimationState.IDLE, AnimationFactory.createAnimation("game/sprites/player/ss_luna_idle_DEBUG.png",
+                    2, 2, 0, 1, 1, 0, 0.5f));
+            animations.put(AnimationState.WALK_RIGHT, AnimationFactory.createAnimation("game/sprites/player/ss_luna_walking_DEBUG.png",
+                    2, 2, 0, 1, 2, 0, 0.3f));
+            animations.put(AnimationState.WALK_LEFT, AnimationFactory.createAnimation("game/sprites/player/ss_luna_walking_DEBUG.png",
+                    2, 2, 0, 1, 2, 1, 0.3f));
+        } else {
+            animations.put(AnimationState.IDLE, AnimationFactory.createAnimation("game/sprites/player/ss_luna_idle.png",
+                    2, 2, 0, 1, 1, 0, 0.5f));
+            animations.put(AnimationState.WALK_RIGHT, AnimationFactory.createAnimation("game/sprites/player/ss_luna_walking.png",
+                    2, 2, 0, 1, 2, 0, 0.3f));
+            animations.put(AnimationState.WALK_LEFT, AnimationFactory.createAnimation("game/sprites/player/ss_luna_walking.png",
+                    2, 2, 0, 1, 2, 1, 0.3f));
+        }
     }
 
     public int getHealth() {
         return health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
     }
 }

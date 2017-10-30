@@ -2,7 +2,6 @@ package com.senproj.luna.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.senproj.luna.gui.GuiButton;
 import com.senproj.luna.gui.GuiButtonConstants;
 import com.senproj.luna.gui.GuiButtonFactory;
@@ -10,14 +9,14 @@ import com.senproj.luna.helpers.Settings;
 
 import java.util.ArrayList;
 
+import static com.senproj.luna.LunaGame.batch;
+
 public class MenuState extends GameState {
-    private SpriteBatch batch;
     private Texture background;
     private ArrayList<GuiButton> buttons;
 
-    public MenuState(GameStateManager gsm, SpriteBatch batch) {
+    public MenuState(GameStateManager gsm) {
         super(gsm);
-        this.batch = batch;
         background = new Texture("menu/background/temp_mainmenu.png");
         buttons = new ArrayList<>();
         buttons.add(GuiButtonFactory.createButton(GuiButtonConstants.NEW_GAME_BUTTON));
@@ -30,7 +29,7 @@ public class MenuState extends GameState {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void render() {
         batch.begin();
         batch.draw(background, 0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT);
         for (GuiButton button : buttons) {
@@ -47,7 +46,7 @@ public class MenuState extends GameState {
                 if (button.isClicked(mouseX, mouseY)) {
                     switch (button.getTag()) {
                         case NEW_GAME_BUTTON:
-                            gsm.setState(new PlayState(gsm, batch));
+                            gsm.setState(new PlayState(gsm));
                             return;
                         case EXIT_GAME_BUTTON:
                             Gdx.app.exit();

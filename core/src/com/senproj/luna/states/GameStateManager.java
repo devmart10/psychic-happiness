@@ -1,7 +1,5 @@
 package com.senproj.luna.states;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import java.util.Stack;
 
 public class GameStateManager {
@@ -29,7 +27,7 @@ public class GameStateManager {
         states.peek().update(dt);
     }
 
-    public void render(SpriteBatch batch) {
-        states.peek().render(batch);
+    public void render() {
+        states.peek().render();
     }
 }

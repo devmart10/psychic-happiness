@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.senproj.luna.LunaGame;
 import com.senproj.luna.characters.Player;
 import com.senproj.luna.helpers.Settings;
 
@@ -26,12 +27,12 @@ public class Hud {
     private Label lblOxygenText;
     private Label lblOxygenValue;
 
-    public Hud(SpriteBatch batch, Player player) {
+    public Hud(Player player) {
         this.player = player;
         //setup the HUD viewport using a new camera seperate from our gamecam
         //define our stage using that viewport and our games spritebatch
         viewport = new FitViewport(Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT, new OrthographicCamera());
-        stage = new Stage(viewport, batch);
+        stage = new Stage(viewport, LunaGame.batch);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = getBitmapFont();
