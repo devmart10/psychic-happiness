@@ -1,14 +1,12 @@
-package com.senproj.luna.characters;
+package com.senproj.luna.sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.physics.box2d.*;
 import com.senproj.luna.animations.AnimationFactory;
 import com.senproj.luna.animations.AnimationState;
 import com.senproj.luna.helpers.Settings;
@@ -19,13 +17,12 @@ import java.util.Map;
 
 import static com.senproj.luna.LunaGame.batch;
 
-public class Player {
+public class Player extends Sprite {
 
     private static final float SPEED = 150;
     private GameMap gamemap;
     private float timer = 0f;
     private int time = 0;
-    private Vector2 pos, vel;
     private Map<AnimationState, Animation<TextureRegion>> animations;
     private AnimationState currentState;
     private float animationTime;
@@ -34,22 +31,45 @@ public class Player {
     private int oxygen;
     private int health;
     private int width, height;
-    private Rectangle rectangle;
 
-    public Player(GameMap gamemap) {
+    public World world;
+    public Body body;
+
+    // determines the feel of walking
+    private static final float dampenStrength = 20f;
+    private static final float impulseStrength = 30f;
+
+    public Player(GameMap gamemap, World world) {
         this.gamemap = gamemap;
+        this.world = world;
+
+
         animations = new HashMap<>();
         loadAnimations();
-        pos = new Vector2(Settings.SCREEN_WIDTH / 2.0f, Settings.SCREEN_HEIGHT / 2.0f);
-        vel = new Vector2(0, 0);
         animationTime = 0;
 
         // temp
         oxygen = 20;
         health = 50;
+
         width = 32;
         height = 32;
-        rectangle = new Rectangle(pos.x, pos.y, width, height);
+        defineBody();
+    }
+
+    private void defineBody() {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(new Vector2(Settings.SCREEN_WIDTH / 2f, Settings.SCREEN_HEIGHT / 2f));
+        body = world.createBody(bodyDef);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(18, 16);
+
+        fixtureDef.shape = shape;
+        body.createFixture(fixtureDef);
+        body.setLinearDamping(dampenStrength);
     }
 
     public void update(float dt) {
@@ -62,24 +82,13 @@ public class Player {
             changeValues();
         }
         updateVelocity();
-        vel.scl(dt * SPEED);
-        pos.add(vel);
-        rectangle.setPosition(pos);
 
         checkCollisions();
         animationTime += dt;
     }
 
     private void checkCollisions() {
-        Array<RectangleMapObject> objects = gamemap.getMap().getLayers().get("BuildingCollisions").getObjects().getByType(RectangleMapObject.class);
-        for (RectangleMapObject object : objects) {
-            Rectangle other = object.getRectangle();
-            if (Intersector.overlaps(rectangle, other)) {
-                // TODO: this is super lame
-                pos.sub(vel);
-                rectangle.setPosition(pos);
-            }
-        }
+
     }
 
     private void changeValues() {
@@ -99,8 +108,7 @@ public class Player {
     public void draw() {
         batch.begin();
         TextureRegion tex = animations.get(currentState).getKeyFrame(animationTime, true);
-//        batch.draw(tex, pos.x - tex.getRegionWidth() / 2.0f, pos.y - tex.getRegionHeight() / 2.0f);
-        batch.draw(tex, rectangle.x, rectangle.y);
+        batch.draw(tex, body.getPosition().x - width, body.getPosition().y - height / 2);
         batch.end();
     }
 
@@ -109,30 +117,30 @@ public class Player {
     }
 
     public Vector2 getPosition() {
-        return pos;
+        return body.getPosition();
     }
 
     private void updateVelocity() {
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            vel.y = 1;
+            body.applyLinearImpulse(new Vector2(0, impulseStrength), body.getWorldCenter(), true);
         } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            vel.y = -1;
-        } else {
-            vel.y = 0;
+            body.applyLinearImpulse(new Vector2(0, -impulseStrength), body.getWorldCenter(), true);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            vel.x = -1;
-            currentState = AnimationState.WALK_LEFT;
+            body.applyLinearImpulse(new Vector2(-impulseStrength, 0), body.getWorldCenter(), true);
         } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            vel.x = 1;
-            currentState = AnimationState.WALK_RIGHT;
-        } else {
-            vel.x = 0;
+            body.applyLinearImpulse(new Vector2(impulseStrength, 0), body.getWorldCenter(), true);
         }
 
-        if (vel.isZero()) {
+        if (Math.abs(body.getLinearVelocity().x) < impulseStrength / 2) {
             currentState = AnimationState.IDLE;
+        }
+        else if (body.getLinearVelocity().x < 0) {
+            currentState = AnimationState.WALK_LEFT;
+        }
+        else if (body.getLinearVelocity().x > 0) {
+            currentState = AnimationState.WALK_RIGHT;
         }
     }
 

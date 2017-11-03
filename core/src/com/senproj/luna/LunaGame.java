@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Logger;
 import com.senproj.luna.states.GameStateManager;
-import com.senproj.luna.states.MenuState;
+import com.senproj.luna.states.PlayState;
 
 
 public class LunaGame extends Game {
@@ -21,8 +21,8 @@ public class LunaGame extends Game {
         logger = new Logger("LunaGame");
         logger.setLevel(Logger.DEBUG);
         gsm = new GameStateManager();
-	    gsm.pushState(new MenuState(gsm));
-//        gsm.pushState(new PlayState(gsm));
+//	    gsm.pushState(new MenuState(gsm));
+        gsm.pushState(new PlayState(gsm));
         init();
     }
 

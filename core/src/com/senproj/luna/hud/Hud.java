@@ -12,8 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.senproj.luna.LunaGame;
-import com.senproj.luna.characters.Player;
 import com.senproj.luna.helpers.Settings;
+import com.senproj.luna.sprites.Player;
 
 public class Hud {
     private Player player;
