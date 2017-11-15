@@ -6,18 +6,17 @@ import com.senproj.luna.gui.GuiButton;
 import com.senproj.luna.gui.GuiButtonConstants;
 import com.senproj.luna.gui.GuiButtonFactory;
 import com.senproj.luna.helpers.Settings;
+import com.senproj.luna.render.RenderableTexture;
 
 import java.util.ArrayList;
 
-import static com.senproj.luna.LunaGame.batch;
-
 public class MenuState extends GameState {
-    private Texture background;
+    private RenderableTexture background;
     private ArrayList<GuiButton> buttons;
 
     public MenuState(GameStateManager gsm) {
         super(gsm);
-        background = new Texture("menu/background/temp_mainmenu.png");
+        background = new RenderableTexture(0, 0, "menu/background/temp_mainmenu.png");
         buttons = new ArrayList<>();
         buttons.add(GuiButtonFactory.createButton(GuiButtonConstants.NEW_GAME_BUTTON));
         buttons.add(GuiButtonFactory.createButton(GuiButtonConstants.EXIT_GAME_BUTTON));
@@ -30,12 +29,10 @@ public class MenuState extends GameState {
 
     @Override
     public void render() {
-        batch.begin();
-        batch.draw(background, 0, 0, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT);
+        background.render();
         for (GuiButton button : buttons) {
-            button.draw(batch);
+            button.render();
         }
-        batch.end();
     }
 
     @Override

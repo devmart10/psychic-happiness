@@ -6,18 +6,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Logger;
+import com.senproj.luna.render.RenderManager;
 import com.senproj.luna.states.GameStateManager;
 import com.senproj.luna.states.PlayState;
 
 
 public class LunaGame extends Game {
     private GameStateManager gsm;
-    public static SpriteBatch batch;
     public static Logger logger;
 
     @Override
     public void create() {
-        batch = new SpriteBatch();
         logger = new Logger("LunaGame");
         logger.setLevel(Logger.DEBUG);
         gsm = new GameStateManager();
@@ -45,6 +44,6 @@ public class LunaGame extends Game {
 
     @Override
     public void dispose() {
-        batch.dispose();
+        RenderManager.dispose();
     }
 }

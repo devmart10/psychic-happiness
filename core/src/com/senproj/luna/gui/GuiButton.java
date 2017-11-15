@@ -3,14 +3,17 @@ package com.senproj.luna.gui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.senproj.luna.render.Renderable;
+import com.senproj.luna.render.RenderableTexture;
 
 /**
  * A class to hold data representing a button on the GUI.
  */
-public class GuiButton {
+public class GuiButton implements Renderable {
     private GuiButtonConstants tag;
-    private Texture tex;
+    private RenderableTexture texture;
     Vector2 bottomLeft;
     Vector2 topRight;
 
@@ -26,18 +29,14 @@ public class GuiButton {
      * @param tex the texture to display for the button
      */
     public GuiButton(int posX, int posY, GuiButtonConstants tag, Texture tex) {
-        this.tex = tex;
-        this.tag = tag;
         bottomLeft = new Vector2(posX - tex.getWidth() / 2.0f, posY - tex.getHeight() / 2.0f);
         topRight = new Vector2(posX + tex.getWidth() / 2.0f, posY + tex.getHeight() / 2.0f);
+        this.texture = new RenderableTexture(bottomLeft.x, bottomLeft.y, tex);
+        this.tag = tag;
     }
 
     public boolean isClicked(int mouseX, int mouseY) {
         return mouseX >= bottomLeft.x && mouseX <= topRight.x && mouseY > bottomLeft.y && mouseY < topRight.y;
-    }
-
-    public void draw(SpriteBatch batch) {
-        batch.draw(tex, bottomLeft.x, bottomLeft.y);
     }
 
     public GuiButtonConstants getTag() {
@@ -45,6 +44,26 @@ public class GuiButton {
     }
 
     public void dispose() {
-        tex.dispose();
+        texture.dispose();
+    }
+
+    @Override
+    public float getPosX() {
+        return texture.getPosX();
+    }
+
+    @Override
+    public float getPosY() {
+        return texture.getPosY();
+    }
+
+    @Override
+    public TextureRegion getTex() {
+        return texture.getTex();
+    }
+
+    @Override
+    public void render() {
+        texture.render();
     }
 }

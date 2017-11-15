@@ -1,24 +1,33 @@
 package com.senproj.luna.map;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.senproj.luna.map.blocks.Block;
+import com.senproj.luna.map.blocks.BlockType;
+import com.senproj.luna.map.factories.BlockFactory;
+import com.senproj.luna.render.Renderable;
 
 public class GameMap {
-    private OrthographicCamera camera;
+    private Block[][] world;
 
-    private TiledMap map;
-    private OrthogonalTiledMapRenderer renderer;
-
-    public GameMap(OrthographicCamera camera) {
-        map = new TmxMapLoader().load("game/map/terrain/my_map.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map);
-        this.camera = camera;
+    public GameMap() {
+        world = generateNewMap(120, 68);
     }
 
-    public TiledMap getMap() {
-        return map;
+    public Block[][] generateNewMap(int width, int height) {
+        int skyHeight = 2;
+        Block[][] retWorld = new Block[width][height];
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                // temp code to fill sky
+                if (j > skyHeight) {
+                    retWorld[i][j] = BlockFactory.createBlock(i, j, BlockType.SKY);
+                } else { // fill with ground
+                    retWorld[i][j] = BlockFactory.createBlock(i, j, BlockType.DIRT);
+                }
+            }
+        }
+
+        return retWorld;
     }
 
     public void dispose() {
@@ -26,7 +35,16 @@ public class GameMap {
     }
 
     public void render() {
-        renderer.setView(camera);
-        renderer.render();
+        for (int i = 0; i < world.length; i++) {
+            for (int j = 0; j < world[i].length; j++) {
+                if (world[i][j] instanceof Renderable) {
+                    ((Renderable)world[i][j]).render();
+                }
+            }
+        }
+    }
+
+    public Block[][] getWorld() {
+        return world;
     }
 }

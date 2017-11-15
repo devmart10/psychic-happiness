@@ -11,8 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.senproj.luna.LunaGame;
 import com.senproj.luna.helpers.Settings;
+import com.senproj.luna.render.RenderManager;
 import com.senproj.luna.sprites.Player;
 
 public class Hud {
@@ -32,7 +32,7 @@ public class Hud {
         //setup the HUD viewport using a new camera seperate from our gamecam
         //define our stage using that viewport and our games spritebatch
         viewport = new FitViewport(Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT, new OrthographicCamera());
-        stage = new Stage(viewport, LunaGame.batch);
+        stage = new Stage(viewport, RenderManager.spriteBatch);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = getBitmapFont();
@@ -72,9 +72,9 @@ public class Hud {
         return font;
     }
 
-    public void update(float dt) {
+    public void update(float dt) {/*
         lblHealthValue.setText(String.format("%03d", player.getHealth()));
-        lblOxygenValue.setText(String.format("%03d", player.getOxygen()));
+        lblOxygenValue.setText(String.format("%03d", player.getOxygen()));*/
     }
 
     public void draw(SpriteBatch batch) {
