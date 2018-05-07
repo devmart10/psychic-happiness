@@ -26,7 +26,7 @@ using namespace std;
 
 GalaxianGeneticAlgorithm::GalaxianGeneticAlgorithm()
 {
-
+	generation = 0;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -37,13 +37,26 @@ GalaxianGeneticAlgorithm::~GalaxianGeneticAlgorithm() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void GalaxianGeneticAlgorithm::initializeAlgorithm() {
+	cout << "initialized generation " << generation << endl;
+}
 
+Generation GalaxianGeneticAlgorithm::newGeneration()
+{
+	
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void GalaxianGeneticAlgorithm::printTickMessage() {
 	cout << "Tick message." << endl;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+int GalaxianGeneticAlgorithm::getDirection() {
+	int dir = 0 + (rand() % 4);
+	// cout << dir << endl;
+	return dir;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

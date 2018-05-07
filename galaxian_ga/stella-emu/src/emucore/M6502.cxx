@@ -291,9 +291,9 @@ inline bool M6502::_execute(uInt32 number)
 	  uInt16 intermediate = high | uInt8(low);
 
 	  if (intermediate == 390) {
-			printf("390 at %x\n", i);
+			// printf("390 at %x\n", i);
 	  }
-	  printf("----------------\n");
+	  // printf("----------------\n");
   }
 #endif
 

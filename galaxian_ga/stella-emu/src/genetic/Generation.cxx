@@ -15,32 +15,18 @@
 // For more information, questions, or inqueries, contact colemtwitchell@gmail.com.
 //============================================================================
 
-#ifndef GALAXIAN_GENETIC_ALGORITHM_HXX
-#define GALAXIAN_GENETIC_ALGORITHM_HXX
+#include <iostream>
+#include <Windows.h>
 
-#include "genetic_settings.hxx"
 #include "Generation.hxx"
 
-class GalaxianGeneticAlgorithm {
-public:
-	int generation;
-	/**
-	Create a new genetic algorithm parent object
-	*/
-	GalaxianGeneticAlgorithm();
-	virtual ~GalaxianGeneticAlgorithm();
-	
-public:
-	void initializeAlgorithm();
-	Generation newGeneration();
-	void printTickMessage();
-	int getDirection();
-	bool isMemDumpKeyDown();
+using namespace std;
 
-private:
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-protected:
+Generation::Generation()
+{
+	//
+}
 
-};
-
-#endif
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
