@@ -909,6 +909,9 @@
     <ClCompile Include="..\genetic\GalaxianGeneticAlgorithm.cxx">
       <Filter>Source Files\genetic</Filter>
     </ClCompile>
+    <ClCompile Include="..\genetic\Generation.cxx">
+      <Filter>Source Files\genetic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\bspf.hxx">
@@ -1853,10 +1856,13 @@
     <ClInclude Include="..\common\PKeyboardHandler.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="genetic_settings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\genetic\GalaxianGeneticAlgorithm.hxx">
+      <Filter>Header Files\genetic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\genetic\genetic_settings.hxx">
+      <Filter>Header Files\genetic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\genetic\Generation.hxx">
       <Filter>Header Files\genetic</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1865,6 +1871,7 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\emucore\tia\frame-manager\module.mk" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="stella.rc">
