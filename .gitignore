@@ -1,3 +1,4 @@
 *.obj
 /galaxian_ga/stella-emu/src/windows
 *.vcxproj*
+*.vs/*
