@@ -42,7 +42,7 @@ void GalaxianGeneticAlgorithm::initializeAlgorithm() {
 
 Generation GalaxianGeneticAlgorithm::newGeneration()
 {
-	
+	return Generation();
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
