@@ -683,6 +683,7 @@ void OSystem::mainLoop()
 	if (mySettings->getString("timing") == "sleep")
 	{
 		int framesSinceTick = 0;
+		bool firstBack = false;
 
 		// Sleep-based wait: good for CPU, bad for graphical sync
 		for (;;)
@@ -694,32 +695,29 @@ void OSystem::mainLoop()
 
 #ifdef GENETIC_ENABLED
 			if (myEventHandler->state() == EventHandlerState::EMULATION) {
-
+				if (firstBack == false) {
+					firstBack = true;
+					myGalaxianGeneticAlgorithm->startSession();
+				}
+				
 				if (framesSinceTick++ >= FRAMES_PER_UPDATE) {
 					framesSinceTick = 0;
 					// clear active controls
-					// myEventHandler->reset(EventHandlerState::EMULATION);
 					myEventHandler->handleEvent(Event::Type::JoystickZeroLeft, 0);
 					myEventHandler->handleEvent(Event::Type::JoystickZeroRight, 0);
 					myEventHandler->handleEvent(Event::Type::JoystickZeroFire, 0);
 
-					// myGalaxianGeneticAlgorithm->printTickMessage();
-
 					int dir = myGalaxianGeneticAlgorithm->getDirection();
 					if (dir == 0) {
-						cout << "left" << endl;
 						myEventHandler->handleEvent(Event::Type::JoystickZeroLeft, 1);
 					}
 					else if (dir == 1) {
-						cout << "right" << endl;
 						myEventHandler->handleEvent(Event::Type::JoystickZeroRight, 1);
 					}
 					else if (dir == 2) {
-						cout << "firing" << endl;
 						myEventHandler->handleEvent(Event::Type::JoystickZeroFire, 1);
 					}
 					else {
-						cout << "nothing" << endl;
 					}
 				}
 
@@ -727,9 +725,14 @@ void OSystem::mainLoop()
 					cout << "Mem dump requested." << endl;
 				}
 
-
 			}
-
+			else if (myEventHandler->state() == EventHandlerState::LAUNCHER) {
+				if (firstBack) {
+					firstBack = false;
+					myGalaxianGeneticAlgorithm->finishSession();
+				}
+			}
+			
 #endif
 
 			myFrameBuffer->update();

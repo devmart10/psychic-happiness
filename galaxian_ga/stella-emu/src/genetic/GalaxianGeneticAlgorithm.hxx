@@ -18,29 +18,33 @@
 #ifndef GALAXIAN_GENETIC_ALGORITHM_HXX
 #define GALAXIAN_GENETIC_ALGORITHM_HXX
 
+#include <memory>
 #include "genetic_settings.hxx"
 #include "Generation.hxx"
 
+class Generation;
+
 class GalaxianGeneticAlgorithm {
-public:
-	int generation;
+public:	
 	/**
 	Create a new genetic algorithm parent object
 	*/
 	GalaxianGeneticAlgorithm();
 	virtual ~GalaxianGeneticAlgorithm();
-	
+
+protected:
+
 public:
 	void initializeAlgorithm();
-	Generation newGeneration();
-	void printTickMessage();
+	void startSession();
+	void finishSession();
 	int getDirection();
 	bool isMemDumpKeyDown();
 
 private:
-
-protected:
-
+	int generationCount;
+	Generation* currentGeneration;
+	Individual* currentPlayer;
 };
 
 #endif

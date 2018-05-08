@@ -17,6 +17,7 @@
 
 #include <iostream>
 #include <Windows.h>
+#include <memory>
 
 #include "GalaxianGeneticAlgorithm.hxx"
 
@@ -24,9 +25,7 @@ using namespace std;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-GalaxianGeneticAlgorithm::GalaxianGeneticAlgorithm()
-{
-	generation = 0;
+GalaxianGeneticAlgorithm::GalaxianGeneticAlgorithm() {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -37,26 +36,31 @@ GalaxianGeneticAlgorithm::~GalaxianGeneticAlgorithm() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void GalaxianGeneticAlgorithm::initializeAlgorithm() {
-	cout << "initialized generation " << generation << endl;
+	cout << "initializing genetic algorithm" << endl;
+
+	generationCount = 0;
+	currentGeneration = new Generation();
 }
 
-Generation GalaxianGeneticAlgorithm::newGeneration()
+void GalaxianGeneticAlgorithm::startSession()
 {
-	return Generation();
+	cout << "starting: gen " << generationCount << ", " << currentGeneration->populationIndex << endl;
+	currentPlayer = currentGeneration->getCurrentPlayer();
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-void GalaxianGeneticAlgorithm::printTickMessage() {
-	cout << "Tick message." << endl;
+void GalaxianGeneticAlgorithm::finishSession()
+{
+	currentPlayer = currentGeneration->getNextPlayer();
+	if (currentPlayer == nullptr) {
+		cout << "ending generation " << generationCount++ << endl;
+		currentGeneration = currentGeneration->createNewGeneration();
+	}
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 int GalaxianGeneticAlgorithm::getDirection() {
-	int dir = 0 + (rand() % 4);
-	// cout << dir << endl;
-	return dir;
+	return currentPlayer->getDirection();
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

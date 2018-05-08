@@ -1,20 +1,3 @@
-//============================================================================
-//
-//   SSSS                        PPPPP
-//  SS  SS                       PP  PP                        jj
-//  SS       eeee  nn nn         PP   PP rr rrr    oooo
-//   SSSS   ee  ee nnn  nn       PPPPPP  rrrr rr  oo  oo       jj
-//      SS  eeeeee nn   nn       PP      rr      oo    oo      jj
-//  SS  SS  ee     nn   nn ...   PP      rr       oo  oo       jj
-//   SSSS    eeeee nn   nn ...   PP      rr        oooo   jj   jj
-//                                                        jjjjj
-//
-// Senior Project Genetic Algorithm of Cole Twitchell and Devon Martin
-// Cal Poly, San Luis Obispo 2018
-//
-// For more information, questions, or inqueries, contact colemtwitchell@gmail.com.
-//============================================================================
-
 #include <iostream>
 #include <Windows.h>
 
@@ -26,7 +9,33 @@ using namespace std;
 
 Generation::Generation()
 {
-	//
+	populationIndex = 0;
+	for (int i = 0; i < POPULATION_SIZE; i++) {
+		population.push_back(new Individual());
+	}
+}
+
+Generation::~Generation()
+{
+}
+
+Generation * Generation::createNewGeneration()
+{
+	populationIndex = 0;
+	return new Generation();
+}
+
+Individual * Generation::getCurrentPlayer()
+{
+	return population.at(populationIndex);
+}
+
+Individual * Generation::getNextPlayer()
+{
+	if (++populationIndex == population.size()) {
+		return nullptr;
+	}
+	return population.at(populationIndex);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
