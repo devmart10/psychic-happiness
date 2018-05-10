@@ -6,8 +6,11 @@
 
 using namespace std;
 
-Individual::Individual()
-	: fitness(0)
+Individual::Individual(int id)
+	: myFitness(0),
+	fitness(myFitness),
+	myIndividualId(id),
+	id(myIndividualId)
 {
 }
 
@@ -22,17 +25,7 @@ int Individual::getDirection()
 	return dir;
 }
 
-void Individual::calculateFitness(GalaxianGameState *gs)
-{
-	fitness = gs->getPlayerScore();
-}
-
-double Individual::getFitness()
-{
-	return fitness;
-}
-
 void Individual::tick(GalaxianGameState* gs)
 {
-	calculateFitness(gs);
+	myFitness = gs->getPlayerScore();
 }

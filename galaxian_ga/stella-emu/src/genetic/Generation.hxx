@@ -10,12 +10,15 @@ class Generation {
 public:	
 	int populationIndex;
 	
-	Generation();
+	Generation(int genId);
 	~Generation();
-	Generation * createNewGeneration();
+	Generation * spawnNextGeneration();
 	Individual * getCurrentPlayer();
 	Individual * getNextPlayer();
+	const int &id;
+
 private:
+	int myGenerationId;
 	std::vector<Individual *> population;
 };
 

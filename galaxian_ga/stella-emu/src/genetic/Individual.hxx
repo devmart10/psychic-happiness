@@ -9,14 +9,18 @@ class GalaxianGameState;
 
 class Individual {
 public:
-	Individual();
+	Individual(int id);
 	~Individual();
+
 	int getDirection();
-	void calculateFitness(GalaxianGameState *gs);
-	double getFitness();
 	void tick(GalaxianGameState *gs);
+
+	const int &id;
+	const int &fitness;
+
 private:
-	double fitness;
+	int myIndividualId;
+	int myFitness;
 	double* dna;
 };
 
