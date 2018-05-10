@@ -27,14 +27,10 @@ using namespace std;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-<<<<<<< HEAD
-GalaxianGeneticAlgorithm::GalaxianGeneticAlgorithm() { }
-=======
 GalaxianGeneticAlgorithm::GalaxianGeneticAlgorithm(OSystem& sys, GalaxianGameState* gs)
 	: osys(sys), myState(gs)
 {
 }
->>>>>>> 2ecff67b40f262560b4e45a5844f8c13924840e6
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -44,7 +40,12 @@ GalaxianGeneticAlgorithm::~GalaxianGeneticAlgorithm() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void GalaxianGeneticAlgorithm::initializeAlgorithm() {
-<<<<<<< HEAD
+	cout << "initializing genetic algorithm" << endl;
+
+	generationCount = 0;
+	currentGeneration = new Generation();
+
+	startSession();
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -70,11 +71,6 @@ int GalaxianGeneticAlgorithm::getPlayerScore() {
 
 bool GalaxianGeneticAlgorithm::isPlayerDead() {
 	return myConsole->retreiveByte(0xB2) != 0;
-=======
-	cout << "initializing genetic algorithm" << endl;
-
-	generationCount = 0;
-	currentGeneration = new Generation();
 }
 
 void GalaxianGeneticAlgorithm::startSession()
@@ -92,18 +88,18 @@ void GalaxianGeneticAlgorithm::finishSession()
 		currentGeneration = currentGeneration->createNewGeneration();
 		cout << "created generation " << generationCount << endl;
 	}
->>>>>>> 2ecff67b40f262560b4e45a5844f8c13924840e6
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-<<<<<<< HEAD
 int GalaxianGeneticAlgorithm::getPlayerPosition() {
 	return myConsole->retreiveByte(0xE4);
-=======
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 int GalaxianGeneticAlgorithm::getDirection() {
 	return currentPlayer->getDirection();
->>>>>>> 2ecff67b40f262560b4e45a5844f8c13924840e6
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -128,6 +124,11 @@ bool GalaxianGeneticAlgorithm::isRShiftKeyDown() {
 	return false;
 }
 
+void GalaxianGeneticAlgorithm::tick()
+{
+	//currentPlayer->tick(myState);
+}
+
 bool GalaxianGeneticAlgorithm::isResetKeyDown() {
 	static bool pressedLastFrame = false;
 
@@ -146,9 +147,4 @@ bool GalaxianGeneticAlgorithm::isResetKeyDown() {
 	}
 
 	return false;
-}
-
-void GalaxianGeneticAlgorithm::tick()
-{
-	currentPlayer->tick(myState);
 }

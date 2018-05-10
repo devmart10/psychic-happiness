@@ -341,7 +341,10 @@
     <ClCompile Include="..\emucore\tia\Player.cxx" />
     <ClCompile Include="..\emucore\tia\Playfield.cxx" />
     <ClCompile Include="..\emucore\tia\TIA.cxx" />
+    <ClCompile Include="..\genetic\GalaxianGameState.cxx" />
     <ClCompile Include="..\genetic\GalaxianGeneticAlgorithm.cxx" />
+    <ClCompile Include="..\genetic\Generation.cxx" />
+    <ClCompile Include="..\genetic\Individual.cxx" />
     <ClCompile Include="..\gui\ColorWidget.cxx" />
     <ClCompile Include="..\gui\DeveloperDialog.cxx" />
     <ClCompile Include="..\gui\FileListWidget.cxx" />
@@ -648,7 +651,11 @@
     <ClInclude Include="..\emucore\tia\TIA.hxx" />
     <ClInclude Include="..\emucore\tia\TIAConstants.hxx" />
     <ClInclude Include="..\emucore\TrakBall.hxx" />
+    <ClInclude Include="..\genetic\GalaxianGameState.hxx" />
     <ClInclude Include="..\genetic\GalaxianGeneticAlgorithm.hxx" />
+    <ClInclude Include="..\genetic\Generation.hxx" />
+    <ClInclude Include="..\genetic\genetic_settings.hxx" />
+    <ClInclude Include="..\genetic\Individual.hxx" />
     <ClInclude Include="..\gui\ColorWidget.hxx" />
     <ClInclude Include="..\gui\ConsoleBFont.hxx" />
     <ClInclude Include="..\gui\ConsoleMediumBFont.hxx" />

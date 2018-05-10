@@ -249,55 +249,6 @@ inline bool M6502::_execute(uInt32 number)
   M6532& riot = mySystem->m6532();
 #endif
 
-<<<<<<< HEAD
-=======
-#ifdef GENETIC_ENABLED
-  /*
-  uInt8 _6000 = myPeek(0x6000, 0);
-  if (_6000) {
-	  printf("0x6000: %x\n", _6000);
-	  printf(" - coin1: %d\n", _6000 & 0x1 ? 1 : 0);
-	  printf(" - coin2: %d\n", _6000 & 0x2 ? 1 : 0);
-	  printf(" - p1 left: %d\n", _6000 & 0x4 ? 1 : 0);
-	  printf(" - p1 right: %d\n", _6000 & 0x8 ? 1 : 0);
-	  printf(" - p1 shoot: %d\n", _6000 & 0x10 ? 1 : 0);
-	  printf(" - table ??: %d\n", _6000 & 0x20 ? 1 : 0);
-	  printf(" - test: %d\n", _6000 & 0x40 ? 1 : 0);
-	  printf(" - service: %d\n", _6000 & 0x80 ? 1 : 0);
-  }
-
-  uInt8 _6800 = myPeek(0x6800, 0);
-  if (_6800) {
-	  printf("0x6800: %x\n", _6800);
-	  printf(" - p1 start: %d\n", _6800 & 0x1 ? 1 : 0);
-	  printf(" - p2 start: %d\n", _6800 & 0x2 ? 1 : 0);
-	  printf(" - p2 left: %d\n", _6800 & 0x4 ? 1 : 0);
-	  printf(" - p2 right: %d\n", _6800 & 0x8 ? 1 : 0);
-	  printf(" - p2 shoot: %d\n", _6800 & 0x10 ? 1 : 0);
-	  printf(" - unused: %d\n", _6800 & 0x20 ? 1 : 0);
-	  printf(" - dip sw1: %d\n", _6800 & 0x40 ? 1 : 0);
-	  printf(" - dip sw2: %d\n", _6800 & 0x80 ? 1 : 0);
-  }
-
-  uInt8 _823c = myPeek(0x823c, 0);
-  if (_823c == 0) {
-	  printf("0x823c: %x\n", _823c);
-  }
-  */
-
-  for (uInt32 i = 0x80; i < 0x100; i = i + 0x0002) {
-	  uInt16 low = myPeek(i, DISASM_CODE);
-	  uInt16 high = (uInt16(myPeek(i + 1, DISASM_CODE)) << 8);
-	  uInt16 intermediate = high | uInt8(low);
-
-	  if (intermediate == 390) {
-			// printf("390 at %x\n", i);
-	  }
-	  // printf("----------------\n");
-  }
-#endif
-
->>>>>>> 2ecff67b40f262560b4e45a5844f8c13924840e6
   // Loop until execution is stopped or a fatal error occurs
   for(;;)
   {

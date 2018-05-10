@@ -353,7 +353,6 @@ void OSystem::createSound()
 string OSystem::createConsole(const FilesystemNode& rom, const string& md5sum,
 	bool newrom)
 {
-<<<<<<< HEAD
   bool showmessage = false;
 
   // If same ROM has been given, we reload the current one (assuming one exists)
@@ -433,84 +432,6 @@ string OSystem::createConsole(const FilesystemNode& rom, const string& md5sum,
     myEventHandler->handleConsoleStartupEvents();
   }
   return EmptyString;
-=======
-	bool showmessage = false;
-
-	// If same ROM has been given, we reload the current one (assuming one exists)
-	if (!newrom && rom == myRomFile)
-	{
-		showmessage = true;  // we show a message if a ROM is being reloaded
-	}
-	else
-	{
-		myRomFile = rom;
-		myRomMD5 = md5sum;
-
-		// Each time a new console is loaded, we simulate a cart removal
-		// Some carts need knowledge of this, as they behave differently
-		// based on how many power-cycles they've been through since plugged in
-		mySettings->setValue("romloadcount", 0);
-	}
-
-	// Create an instance of the 2600 game console
-	ostringstream buf;
-	try
-	{
-		closeConsole();
-		myConsole = openConsole(myRomFile, myRomMD5);
-	}
-	catch (const runtime_error& e)
-	{
-		buf << "ERROR: Couldn't create console (" << e.what() << ")";
-		logMessage(buf.str(), 0);
-		return buf.str();
-	}
-
-	if (myConsole)
-	{
-#ifdef DEBUGGER_SUPPORT
-		myDebugger = make_unique<Debugger>(*this, *myConsole);
-		myDebugger->initialize();
-		myConsole->attachDebugger(*myDebugger);
-#endif
-#ifdef CHEATCODE_SUPPORT
-		myCheatManager->loadCheats(myRomMD5);
-#endif
-		myEventHandler->reset(EventHandlerState::EMULATION);
-		myEventHandler->setMouseControllerMode(mySettings->getString("usemouse"));
-		if (createFrameBuffer() != FBInitStatus::Success)  // Takes care of initializeVideo()
-		{
-			logMessage("ERROR: Couldn't create framebuffer for console", 0);
-			myEventHandler->reset(EventHandlerState::LAUNCHER);
-			return "ERROR: Couldn't create framebuffer for console";
-		}
-		myConsole->initializeAudio();
-
-		if (showmessage)
-		{
-			const string& id = myConsole->cartridge().multiCartID();
-			if (id == "")
-				myFrameBuffer->showMessage("New console created");
-			else
-				myFrameBuffer->showMessage("Multicart " +
-					myConsole->cartridge().detectedType() + ", loading ROM" + id);
-		}
-		buf << "Game console created:" << endl
-			<< "  ROM file: " << myRomFile.getShortPath() << endl << endl
-			<< getROMInfo(*myConsole) << endl;
-		logMessage(buf.str(), 1);
-
-		// Update the timing info for a new console run
-		resetLoopTiming();
-
-		myFrameBuffer->setCursorState();
-
-		// Also check if certain virtual buttons should be held down
-		// These must be checked each time a new console is being created
-		myEventHandler->handleConsoleStartupEvents();
-	}
-	return EmptyString;
->>>>>>> 2ecff67b40f262560b4e45a5844f8c13924840e6
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -764,103 +685,34 @@ uInt64 OSystem::getTicks() const
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void OSystem::mainLoop()
 {
-<<<<<<< HEAD
-  if(mySettings->getString("timing") == "sleep")
-  {
-	  int framesSinceTick = 0;
-	  uInt8 tester = 0x80;
-=======
 	if (mySettings->getString("timing") == "sleep")
 	{
-		bool firstBack = false;
 		int framesSinceTick = 0;
->>>>>>> 2ecff67b40f262560b4e45a5844f8c13924840e6
 
 		// Sleep-based wait: good for CPU, bad for graphical sync
-		for (;;)
-		{
+		for (;;) {
 			myTimingInfo.start = getTicks();
 			myEventHandler->poll(myTimingInfo.start);
 
 			if (myQuitLoop) break;  // Exit if the user wants to quit
 
-#ifdef GENETIC_ENABLED
-<<<<<<< HEAD
-	  if (myEventHandler->state() == EventHandlerState::EMULATION) {
-		  if (framesSinceTick++ >= FRAMES_PER_UPDATE) {
-			  framesSinceTick = 0;
-
-			  if (myGalaxianGeneticAlgorithm->isPlayerDead()) {
-				  myConsole->resetGame();
-			  }
-
-			  //printf("Charger loc: (%d, %d)\n", myConsole->retreiveByte(0xC2), myConsole->retreiveByte(0xC7));
-
-			  /*
-			  printf("Score: %d, Player Position: %d\n", 
-				  myGalaxianGeneticAlgorithm->getPlayerScore(), 
-				  myGalaxianGeneticAlgorithm->getPlayerPosition());
-				  */
-			  /*
-			  printf("0xC0: %d, 0xC1: %d, 0xC2: %d\n",
-				  myConsole->retreiveByte(0xC0),
-				  myConsole->retreiveByte(0xC1),
-				  myConsole->retreiveByte(0xC2));
-			  */
-		  }
-
-		  if (myGalaxianGeneticAlgorithm->isRShiftKeyDown()) {
-			  myConsole->placeByte(tester++, 0x77);
-		  }
-
-		  if (myGalaxianGeneticAlgorithm->isResetKeyDown()) {
-			  myConsole->resetGame();
-		  }
-	  }
-=======
-			myGalaxianGeneticAlgorithm->tick();
+		  #ifdef GENETIC_ENABLED
 			if (myEventHandler->state() == EventHandlerState::EMULATION) {
-				if (firstBack == false) {
-					firstBack = true;
-					myGalaxianGeneticAlgorithm->startSession();
-				}
-
 				if (framesSinceTick++ >= FRAMES_PER_UPDATE) {
 					framesSinceTick = 0;
-					// clear active controls
-					myEventHandler->handleEvent(Event::Type::JoystickZeroLeft, 0);
-					myEventHandler->handleEvent(Event::Type::JoystickZeroRight, 0);
-					myEventHandler->handleEvent(Event::Type::JoystickZeroFire, 0);
 
-					int dir = myGalaxianGeneticAlgorithm->getDirection();
-					if (dir == 0) {
-						myEventHandler->handleEvent(Event::Type::JoystickZeroLeft, 1);
-					}
-					else if (dir == 1) {
-						myEventHandler->handleEvent(Event::Type::JoystickZeroRight, 1);
-					}
-					else if (dir == 2) {
-						myEventHandler->handleEvent(Event::Type::JoystickZeroFire, 1);
-					}
-					else {
+					if (myGalaxianGeneticAlgorithm->isPlayerDead() || myGalaxianGeneticAlgorithm->isResetKeyDown()) {
+						myGalaxianGeneticAlgorithm->finishSession();
+
+						myConsole->resetGame();
 					}
 				}
 
-				if (myGalaxianGeneticAlgorithm->isMemDumpKeyDown()) {
-					cout << "Mem dump requested." << endl;
+				if (myGalaxianGeneticAlgorithm->isRShiftKeyDown()) {
+
 				}
 			}
-			else if (myEventHandler->state() == EventHandlerState::LAUNCHER) {
-				if (firstBack) {
-					firstBack = false;
-					myGalaxianGeneticAlgorithm->finishSession();
-					
-					reloadConsole();
-				}
-			}
-			
->>>>>>> 2ecff67b40f262560b4e45a5844f8c13924840e6
-#endif
+		  #endif
 
 			myFrameBuffer->update();
 			myTimingInfo.current = getTicks();
@@ -881,9 +733,8 @@ void OSystem::mainLoop()
 			myTimingInfo.totalTime += (getTicks() - myTimingInfo.start);
 			myTimingInfo.totalFrames++;
 		}
-	}
-	else
-	{
+	} 
+	else {
 		// Busy-wait: bad for CPU, good for graphical sync
 		for (;;)
 		{
