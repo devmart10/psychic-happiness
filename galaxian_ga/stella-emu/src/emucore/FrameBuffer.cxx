@@ -261,10 +261,6 @@ FBInitStatus FrameBuffer::createDisplay(const string& title,
   return FBInitStatus::Success;
 }
 
-void FrameBuffer::dumpMemory() {
-	myOSystem.console().tia().dumpMemory();
-}
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void FrameBuffer::update()
 {

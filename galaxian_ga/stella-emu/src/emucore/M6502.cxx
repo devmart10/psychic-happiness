@@ -23,6 +23,7 @@
   #include "TIA.hxx"
   #include "Base.hxx"
   #include "M6532.hxx"
+  #include <Windows.h>
 
   // Flags for disassembly types
   #define DISASM_CODE  CartDebug::CODE
@@ -47,6 +48,11 @@
 
 #include "System.hxx"
 #include "M6502.hxx"
+
+#ifdef GENETIC_ENABLED
+void printM6502inst(uInt16 pc, uInt8 inst);
+void dumpRegisters(uInt8 A, uInt8 X, uInt8 Y, uInt8 SP, uInt8 IR, uInt16 PC);
+#endif
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 M6502::M6502(const Settings& settings)
@@ -158,14 +164,6 @@ inline uInt8 M6502::peek(uInt16 address, uInt8 flags)
   return result;
 }
 
-#ifdef GENETIC_ENABLED
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-inline uInt8 M6502::myPeek(uInt16 address, uInt8 flags) {
-	return mySystem->peek(address, flags);
-}
-#endif
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 inline void M6502::poke(uInt16 address, uInt8 value, uInt8 flags)
 {
@@ -249,52 +247,6 @@ inline bool M6502::_execute(uInt32 number)
 #ifdef DEBUGGER_SUPPORT
   TIA& tia = mySystem->tia();
   M6532& riot = mySystem->m6532();
-#endif
-
-#ifdef GENETIC_ENABLED
-  /*
-  uInt8 _6000 = myPeek(0x6000, 0);
-  if (_6000) {
-	  printf("0x6000: %x\n", _6000);
-	  printf(" - coin1: %d\n", _6000 & 0x1 ? 1 : 0);
-	  printf(" - coin2: %d\n", _6000 & 0x2 ? 1 : 0);
-	  printf(" - p1 left: %d\n", _6000 & 0x4 ? 1 : 0);
-	  printf(" - p1 right: %d\n", _6000 & 0x8 ? 1 : 0);
-	  printf(" - p1 shoot: %d\n", _6000 & 0x10 ? 1 : 0);
-	  printf(" - table ??: %d\n", _6000 & 0x20 ? 1 : 0);
-	  printf(" - test: %d\n", _6000 & 0x40 ? 1 : 0);
-	  printf(" - service: %d\n", _6000 & 0x80 ? 1 : 0);
-  }
-
-  uInt8 _6800 = myPeek(0x6800, 0);
-  if (_6800) {
-	  printf("0x6800: %x\n", _6800);
-	  printf(" - p1 start: %d\n", _6800 & 0x1 ? 1 : 0);
-	  printf(" - p2 start: %d\n", _6800 & 0x2 ? 1 : 0);
-	  printf(" - p2 left: %d\n", _6800 & 0x4 ? 1 : 0);
-	  printf(" - p2 right: %d\n", _6800 & 0x8 ? 1 : 0);
-	  printf(" - p2 shoot: %d\n", _6800 & 0x10 ? 1 : 0);
-	  printf(" - unused: %d\n", _6800 & 0x20 ? 1 : 0);
-	  printf(" - dip sw1: %d\n", _6800 & 0x40 ? 1 : 0);
-	  printf(" - dip sw2: %d\n", _6800 & 0x80 ? 1 : 0);
-  }
-
-  uInt8 _823c = myPeek(0x823c, 0);
-  if (_823c == 0) {
-	  printf("0x823c: %x\n", _823c);
-  }
-  */
-
-  for (uInt32 i = 0x80; i < 0x100; i = i + 0x0002) {
-	  uInt16 low = myPeek(i, DISASM_CODE);
-	  uInt16 high = (uInt16(myPeek(i + 1, DISASM_CODE)) << 8);
-	  uInt16 intermediate = high | uInt8(low);
-
-	  if (intermediate == 390) {
-			printf("390 at %x\n", i);
-	  }
-	  printf("----------------\n");
-  }
 #endif
 
   // Loop until execution is stopped or a fatal error occurs
@@ -394,6 +346,604 @@ inline bool M6502::_execute(uInt32 number)
     }
   }
 }
+
+#ifdef GENETIC_ENABLED
+void printM6502inst(uInt16 pc, uInt8 inst) {
+	uInt8 A = inst >> 5;
+	uInt8 B = (inst & 0x1C) >> 2;
+	uInt8 C = inst & 0x3;
+
+	printf("PC: %X, IR: ", pc);
+
+	switch (A) {
+		case 0:
+			switch (C) {
+			case 0:
+				switch (B) {
+				case 0:
+					printf("BRK impl\n");
+					break;
+				case 2:
+					printf("PHP impl\n");
+					break;
+				case 4:
+					printf("BPL rel\n");
+					break;
+				case 6:
+					printf("CLC impl\n");
+					break;
+				}
+				break;
+			case 1:
+				switch (B) {
+				case 0:
+					printf("ORA X, ind\n");
+					break;
+				case 1:
+					printf("ORA zpg\n");
+					break;
+				case 2:
+					printf("ORA #\n");
+					break;
+				case 3:
+					printf("ORA abs\n");
+					break;
+				case 4:
+					printf("ORA ind, Y\n");
+					break;
+				case 5:
+					printf("ORA zpg, X\n");
+					break;
+				case 6:
+					printf("ORA abs, Y\n");
+					break;
+				case 7:
+					printf("ORA abs, X\n");
+					break;
+				}
+				break;
+			case 2:
+				switch (B) {
+				case 1:
+					printf("ASL zpg\n");
+					break;
+				case 2:
+					printf("ASL A\n");
+					break;
+				case 3:
+					printf("ASL abs\n");
+					break;
+				case 5:
+					printf("ASL zpg, X\n");
+					break;
+				case 7:
+					printf("ASL abs, X\n");
+					break;
+				}
+				break;
+			}
+			break;
+		case 1:
+			switch (C) {
+			case 0:
+				switch (B) {
+				case 0:
+					printf("JSR abs\n");
+					break;
+				case 1:
+					printf("BIT zpg\n");
+					break;
+				case 2:
+					printf("PLP impl\n");
+					break;
+				case 3:
+					printf("BIT abs\n");
+					break;
+				case 4:
+					printf("BMI rel\n");
+					break;
+				case 6:
+					printf("SEC impl\n");
+					break;
+				}
+				break;
+			case 1:
+				switch (B) {
+				case 0:
+					printf("AND X, ind\n");
+					break;
+				case 1:
+					printf("AND zpg\n");
+					break;
+				case 2:
+					printf("AND #\n");
+					break;
+				case 3:
+					printf("AND abs\n");
+					break;
+				case 4:
+					printf("AND ind, Y\n");
+					break;
+				case 5:
+					printf("AND zpg, X\n");
+					break;
+				case 6:
+					printf("AND abs, Y\n");
+					break;
+				case 7:
+					printf("AND abs, X\n");
+					break;
+				}
+				break;
+			case 2:
+				switch (B) {
+				case 1:
+					printf("ROL zpg\n");
+					break;
+				case 2:
+					printf("ROL A\n");
+					break;
+				case 3:
+					printf("ROL abs\n");
+					break;
+				case 5:
+					printf("ROL zpg, X\n");
+					break;
+				case 7:
+					printf("ROL abs, X\n");
+					break;
+				}
+				break;
+			}
+			break;
+		case 2:
+			switch (C) {
+			case 0:
+				switch (B) {
+				case 0:
+					printf("RTI impl\n");
+					break;
+				case 2:
+					printf("PHA impl\n");
+					break;
+				case 3:
+					printf("JMP abs\n");
+					break;
+				case 4:
+					printf("BVC rel\n");
+					break;
+				case 6:
+					printf("CLI impl\n");
+					break;
+				}
+				break;
+			case 1:
+				switch (B) {
+				case 0:
+					printf("EOR X, ind\n");
+					break;
+				case 1:
+					printf("EOR zpg\n");
+					break;
+				case 2:
+					printf("EOR #\n");
+					break;
+				case 3:
+					printf("EOR abs\n");
+					break;
+				case 4:
+					printf("EOR ind, Y\n");
+					break;
+				case 5:
+					printf("EOR zpg, X\n");
+					break;
+				case 6:
+					printf("EOR abs, Y\n");
+					break;
+				case 7:
+					printf("EOR abs, X\n");
+					break;
+				}
+				break;
+			case 2:
+				switch (B) {
+				case 1:
+					printf("LSR zpg\n");
+					break;
+				case 2:
+					printf("LSR A\n");
+					break;
+				case 3:
+					printf("LSR abs\n");
+					break;
+				case 5:
+					printf("LSR zpg, X\n");
+					break;
+				case 7:
+					printf("LSR abs, X\n");
+					break;
+				}
+				break;
+			}
+			break;
+		case 3:
+			switch (C) {
+			case 0:
+				switch (B) {
+				case 0:
+					printf("RTS impl\n");
+					break;
+				case 2:
+					printf("PLA impl\n");
+					break;
+				case 3:
+					printf("JMP ind\n");
+					break;
+				case 4:
+					printf("BVS rel\n");
+					break;
+				case 6:
+					printf("SEI impl\n");
+					break;
+				}
+				break;
+			case 1:
+				switch (B) {
+				case 0:
+					printf("ADC X, ind\n");
+					break;
+				case 1:
+					printf("ADC zpg\n");
+					break;
+				case 2:
+					printf("ADC #\n");
+					break;
+				case 3:
+					printf("ADC abs\n");
+					break;
+				case 4:
+					printf("ADC ind, Y\n");
+					break;
+				case 5:
+					printf("ADC zpg, X\n");
+					break;
+				case 6:
+					printf("ADC abs, Y\n");
+					break;
+				case 7:
+					printf("ADC abs, X\n");
+					break;
+				}
+				break;
+			case 2:
+				switch (B) {
+				case 1:
+					printf("ROR zpg\n");
+					break;
+				case 2:
+					printf("ROR A\n");
+					break;
+				case 3:
+					printf("ROR abs\n");
+					break;
+				case 5:
+					printf("ROR zpg, X\n");
+					break;
+				case 7:
+					printf("ROR abs, X\n");
+					break;
+				}
+				break;
+			}
+			break;
+		case 4:
+			switch (C) {
+			case 0:
+				switch (B) {
+				case 1:
+					printf("STY zpg\n");
+					break;
+				case 2:
+					printf("DEY impl\n");
+					break;
+				case 3:
+					printf("STY abs\n");
+					break;
+				case 4:
+					printf("BCC rel\n");
+					break;
+				case 5:
+					printf("STY zpg, X\n");
+					break;
+				case 6:
+					printf("TYA implm\n");
+					break;
+				}
+				break;
+			case 1:
+				switch (B) {
+				case 0:
+					printf("STA X, ind\n");
+					break;
+				case 1:
+					printf("STA zpg\n");
+					break;
+				case 3:
+					printf("STA abs\n");
+					break;
+				case 4:
+					printf("STA ind, Y\n");
+					break;
+				case 5:
+					printf("STA zpg, X\n");
+					break;
+				case 6:
+					printf("STA abs, Y\n");
+					break;
+				case 7:
+					printf("STA abs, X\n");
+					break;
+				}
+				break;
+			case 2:
+				switch (B) {
+				case 1:
+					printf("ROR zpg\n");
+					break;
+				case 2:
+					printf("ROR A\n");
+					break;
+				case 3:
+					printf("ROR abs\n");
+					break;
+				case 5:
+					printf("ROR zpg, X\n");
+					break;
+				case 7:
+					printf("ROR abs, X\n");
+					break;
+				}
+				break;
+			}
+			break;
+		case 5:
+			switch (C) {
+			case 0:
+				switch (B) {
+				case 0:
+					printf("LDY #\n");
+					break;
+				case 1:
+					printf("LDY zpg\n");
+					break;
+				case 2:
+					printf("TAY impl\n");
+					break;
+				case 3:
+					printf("LDY abs\n");
+					break;
+				case 4:
+					printf("BCS rel\n");
+					break;
+				case 5:
+					printf("LDY zpg, X\n");
+					break;
+				case 6:
+					printf("CLV impl\n");
+					break;
+				case 7:
+					printf("LDY abs, X\n");
+					break;
+				}
+				break;
+			case 1:
+				switch (B) {
+				case 0:
+					printf("LDA X, ind\n");
+					break;
+				case 1:
+					printf("LDA zpg\n");
+					break;
+				case 2:
+					printf("LDA #\n");
+					break;
+				case 3:
+					printf("LDA abs\n");
+					break;
+				case 4:
+					printf("LDA ind, Y\n");
+					break;
+				case 5:
+					printf("LDA zpg, X\n");
+					break;
+				case 6:
+					printf("LDA abs, Y\n");
+					break;
+				case 7:
+					printf("LDA abs, X\n");
+					break;
+				}
+				break;
+			case 2:
+				switch (B) {
+				case 0:
+					printf("LDX #\n");
+					break;
+				case 1:
+					printf("LDX zpg\n");
+					break;
+				case 2:
+					printf("TAX impl\n");
+					break;
+				case 3:
+					printf("LDX abs\n");
+					break;
+				case 5:
+					printf("LDX zpg, Y\n");
+					break;
+				case 6:
+					printf("TSX impl\n");
+					break;
+				case 7:
+					printf("LDX abs, Y\n");
+					break;
+				}
+				break;
+			}
+			break;
+		case 6:
+			switch (C) {
+			case 0:
+				switch (B) {
+				case 0:
+					printf("CPY #\n");
+					break;
+				case 1:
+					printf("CPY zpg\n");
+					break;
+				case 2:
+					printf("INY impl\n");
+					break;
+				case 3:
+					printf("CPY abs\n");
+					break;
+				case 4:
+					printf("BNE rel\n");
+					break;
+				case 6:
+					printf("CLD impl\n");
+					break;
+				}
+				break;
+			case 1:
+				switch (B) {
+				case 0:
+					printf("CMP X, ind\n");
+					break;
+				case 1:
+					printf("CMP zpg\n");
+					break;
+				case 2:
+					printf("CMP #\n");
+					break;
+				case 3:
+					printf("CMP abs\n");
+					break;
+				case 4:
+					printf("CMP ind, Y\n");
+					break;
+				case 5:
+					printf("CMP zpg, X\n");
+					break;
+				case 6:
+					printf("CMP abs, Y\n");
+					break;
+				case 7:
+					printf("CMP abs, X\n");
+					break;
+				}
+				break;
+			case 2:
+				switch (B) {
+				case 1:
+					printf("DEC zpg\n");
+					break;
+				case 2:
+					printf("DEX impl\n");
+					break;
+				case 3:
+					printf("DEC abs\n");
+					break;
+				case 5:
+					printf("DEC zpg, X\n");
+					break;
+				case 7:
+					printf("DEC abs, Y\n");
+					break;
+				}
+				break;
+			}
+			break;
+		case 7:
+			switch (C) {
+			case 0:
+				switch (B) {
+				case 0:
+					printf("CPX #\n");
+					break;
+				case 1:
+					printf("CPX zpg\n");
+					break;
+				case 2:
+					printf("INX impl\n");
+					break;
+				case 3:
+					printf("CPX abs\n");
+					break;
+				case 4:
+					printf("BEQ rel\n");
+					break;
+				case 6:
+					printf("SED impl\n");
+					break;
+				}
+				break;
+			case 1:
+				switch (B) {
+				case 0:
+					printf("SBC X, ind\n");
+					break;
+				case 1:
+					printf("SBC zpg\n");
+					break;
+				case 2:
+					printf("SBC #\n");
+					break;
+				case 3:
+					printf("SBC abs\n");
+					break;
+				case 4:
+					printf("SBC ind, Y\n");
+					break;
+				case 5:
+					printf("SBC zpg, X\n");
+					break;
+				case 6:
+					printf("SBC abs, Y\n");
+					break;
+				case 7:
+					printf("SBC abs, X\n");
+					break;
+				}
+				break;
+			case 2:
+				switch (B) {
+				case 1:
+					printf("INC zpg\n");
+					break;
+				case 2:
+					printf("NOP impl\n");
+					break;
+				case 3:
+					printf("INC abs\n");
+					break;
+				case 5:
+					printf("INC zpg, X\n");
+					break;
+				case 7:
+					printf("INC abs, X\n");
+					break;
+				}
+				break;
+			}
+			break;
+	}
+}
+
+void dumpRegisters(uInt8 A, uInt8 X, uInt8 Y, uInt8 SP, uInt8 IR, uInt16 PC) {
+	printf("  A: %X\n  X: %X\n  Y: %X\n  SP: %X\n  IR: %X\n  PC: %X\n", A, X, Y, SP, IR, PC);
+}
+#endif
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void M6502::interruptHandler()

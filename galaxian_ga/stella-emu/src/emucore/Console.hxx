@@ -264,6 +264,45 @@ class Console : public Serializable
     */
     void changeHeight(int direction);
 
+#ifdef GENETIC_ENABLED
+	/**
+	  The following function retreives a portion of one byte from the M6502's memory.
+
+	  @param address The address of the aligned byte to retreive from.
+	  @param numBits The number of bits to return, right aligned.
+	  @param offset The number of bits to offset for masking.
+	*/
+	uInt8 retreivePartialByte(uInt16 address, int numBits, int offset);
+
+	/**
+	  The following functions retreive a portion of data from the M6502's memory.
+
+	  @param address The address of the aligned byte to retreive from.
+	*/
+	uInt8 retreiveByte(uInt16 address);
+	uInt16 retreiveWord(uInt16 address);
+
+	/**
+	  Sets the value of one byte of the M6502's memory.
+
+	  @param address The address to be changed
+	  @param b The byte to be inserted
+	*/
+	void placeByte(uInt16 address, uInt8 b);
+
+	/** 
+	  Prints a byte of memory in binary form.
+
+	  @param address The address to print the value of.
+	*/
+	void printByteAsBinary(uInt16 address);
+
+	/**
+	  Resets the game to its original state.
+	*/
+	void resetGame();
+#endif
+
     /**
       Sets the framerate of the console, which in turn communicates
       this to all applicable subsystems.

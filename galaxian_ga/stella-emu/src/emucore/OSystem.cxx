@@ -393,6 +393,9 @@ string OSystem::createConsole(const FilesystemNode& rom, const string& md5sum,
   #ifdef CHEATCODE_SUPPORT
     myCheatManager->loadCheats(myRomMD5);
   #endif
+  #ifdef GENETIC_ENABLED
+	myGalaxianGeneticAlgorithm->setConsole(myConsole.get());
+  #endif
     myEventHandler->reset(EventHandlerState::EMULATION);
     myEventHandler->setMouseControllerMode(mySettings->getString("usemouse"));
     if(createFrameBuffer() != FBInitStatus::Success)  // Takes care of initializeVideo()
@@ -683,6 +686,7 @@ void OSystem::mainLoop()
   if(mySettings->getString("timing") == "sleep")
   {
 	  int framesSinceTick = 0;
+	  uInt8 tester = 0x80;
 
     // Sleep-based wait: good for CPU, bad for graphical sync
     for(;;)
@@ -697,14 +701,29 @@ void OSystem::mainLoop()
 		  if (framesSinceTick++ >= FRAMES_PER_UPDATE) {
 			  framesSinceTick = 0;
 
-			  myGalaxianGeneticAlgorithm->printTickMessage();
+			  if (myGalaxianGeneticAlgorithm->isPlayerDead()) {
+				  myConsole->resetGame();
+			  }
+
+			  printf("Score: %d, Player Position: %d\n", 
+				  myGalaxianGeneticAlgorithm->getPlayerScore(), 
+				  myGalaxianGeneticAlgorithm->getPlayerPosition());
+
+			  /*
+			  printf("0xC0: %d, 0xC1: %d, 0xC2: %d\n",
+				  myConsole->retreiveByte(0xC0),
+				  myConsole->retreiveByte(0xC1),
+				  myConsole->retreiveByte(0xC2));
+			  */
 		  }
 
-		  if (myGalaxianGeneticAlgorithm->isMemDumpKeyDown()) {
-			  cout << "Mem dump requested." << endl;
+		  if (myGalaxianGeneticAlgorithm->isRShiftKeyDown()) {
+			  myConsole->placeByte(tester++, 0x77);
 		  }
 
-		  
+		  if (myGalaxianGeneticAlgorithm->isResetKeyDown()) {
+			  myConsole->resetGame();
+		  }
 	  }
 #endif
 

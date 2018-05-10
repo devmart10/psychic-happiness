@@ -805,10 +805,6 @@ bool TIA::loadDisplay(Serializer& in)
   return true;
 }
 
-void TIA::dumpMemory() {
-	mySystem->m6502().dumpMemory();
-}
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void TIA::update()
 {

@@ -478,6 +478,55 @@ void Console::togglePhosphor()
   }
 }
 
+#ifdef GENETIC_ENABLED
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+uInt8 Console::retreivePartialByte(uInt16 address, int numBits, int offset) {
+	uInt8 val = mySystem->peek(address, 0);
+	signed int mask = 0xFFFF - 0x80;
+
+	for (int i = 0; i < 8; i++) {
+		if (i < offset || i >= offset + numBits) {
+			val &= mask;
+		}
+		mask = mask >> 1;
+	}
+
+	return val >> (8 - offset - numBits);
+}
+
+uInt8 Console::retreiveByte(uInt16 address) {
+	return mySystem->peek(address, 0);
+}
+
+uInt16 Console::retreiveWord(uInt16 address) {
+	uInt16 retVal = mySystem->peek(address, 0) << 8;
+	retVal |= mySystem->peek(address + 1, 0);
+
+	return retVal;
+}
+
+void Console::placeByte(uInt16 address, uInt8 b) {
+	mySystem->poke(address, b);
+}
+
+void Console::printByteAsBinary(uInt16 address) {
+	uInt8 val = mySystem->peek(address, 0);
+	uInt8 mask = 0x80;
+
+	printf("%02X: ", address);
+	for (int i = 0; i < 8; i++) {
+		printf("%d", val & mask ? 1 : 0);
+		mask >>= 1;
+	}
+	cout << endl;
+}
+
+void Console::resetGame() {
+	mySystem->reset();
+}
+
+#endif
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void Console::changePhosphor(int direction)
 {

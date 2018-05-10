@@ -20,6 +20,8 @@
 
 #include "genetic_settings.hxx"
 
+class OSystem;
+
 class GalaxianGeneticAlgorithm {
 public:
 	/**
@@ -30,10 +32,15 @@ public:
 	
 public:
 	void initializeAlgorithm();
-	void printTickMessage();
-	bool isMemDumpKeyDown();
+	bool isRShiftKeyDown();
+	bool isResetKeyDown();
+	int getPlayerScore();
+	bool isPlayerDead();
+	int getPlayerPosition();
+	void setConsole(Console *console);
 
 private:
+	Console *myConsole;
 
 protected:
 

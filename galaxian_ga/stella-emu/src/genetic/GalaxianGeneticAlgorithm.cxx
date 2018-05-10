@@ -18,16 +18,15 @@
 #include <iostream>
 #include <Windows.h>
 
+#include "Console.hxx"
+#include "bspf.hxx"
 #include "GalaxianGeneticAlgorithm.hxx"
 
 using namespace std;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-GalaxianGeneticAlgorithm::GalaxianGeneticAlgorithm()
-{
-
-}
+GalaxianGeneticAlgorithm::GalaxianGeneticAlgorithm() { }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -37,21 +36,65 @@ GalaxianGeneticAlgorithm::~GalaxianGeneticAlgorithm() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void GalaxianGeneticAlgorithm::initializeAlgorithm() {
-
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-void GalaxianGeneticAlgorithm::printTickMessage() {
-	cout << "Tick message." << endl;
+void GalaxianGeneticAlgorithm::setConsole(Console *console) {
+	myConsole = console;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-bool GalaxianGeneticAlgorithm::isMemDumpKeyDown() {
+int GalaxianGeneticAlgorithm::getPlayerScore() {
+	int tens = myConsole->retreivePartialByte(0xAE, 4, 0);
+	int hundreds = myConsole->retreivePartialByte(0xAD, 4, 4);
+	int thousands = myConsole->retreivePartialByte(0xAD, 4, 0);
+	int ten_thousands = myConsole->retreivePartialByte(0xAC, 4, 4);
+	int hun_thousands = myConsole->retreivePartialByte(0xAC, 4, 0);
+
+	return tens * 10 + hundreds * 100 + thousands * 1000 + 
+		   ten_thousands * 10000 + hun_thousands * 100000;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+bool GalaxianGeneticAlgorithm::isPlayerDead() {
+	return myConsole->retreiveByte(0xB2) != 0;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+int GalaxianGeneticAlgorithm::getPlayerPosition() {
+	return myConsole->retreiveByte(0xE4);
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+bool GalaxianGeneticAlgorithm::isRShiftKeyDown() {
 	static bool pressedLastFrame = false;
 
-	if (GetKeyState('A') & 0x8000) {
+	if (GetKeyState(VK_RSHIFT) & 0x8000) {
+		if (pressedLastFrame) {
+			return false;
+		}
+		else {
+			pressedLastFrame = true;
+
+			return true;
+		}
+	}
+	else {
+		pressedLastFrame = false;
+	}
+
+	return false;
+}
+
+bool GalaxianGeneticAlgorithm::isResetKeyDown() {
+	static bool pressedLastFrame = false;
+
+	if (GetKeyState('R') & 0x8000) {
 		if (pressedLastFrame) {
 			return false;
 		}

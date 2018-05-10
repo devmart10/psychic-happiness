@@ -124,8 +124,6 @@ class TIA : public Device
     */
     void frameReset();
 
-	void dumpMemory();
-
     /**
       Install TIA in the specified system.  Invoked by the system
       when the TIA is attached to it.

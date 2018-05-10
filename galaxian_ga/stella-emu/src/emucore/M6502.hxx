@@ -263,20 +263,6 @@ class M6502 : public Serializable
     */
     uInt8 peek(uInt16 address, uInt8 flags);
 
-#ifdef GENETIC_ENABLED
-	/**
-	  Gets the byte at the specified address with no aftereffects
-	  on the CPU itself. Used exclusively to check memory locations.
-
-	  @param address  The address from which the value should be loaded
-	  @param flags    Indicates that this address has the given flags
-					  for type of access (CODE, DATA, GFX, etc)
-
-      @return The byte at the specified address
-	*/
-	uInt8 myPeek(uInt16 address, uInt8 flags);
-#endif
-
     /**
       Change the byte at the specified address to the given value and
       update the cycle count.

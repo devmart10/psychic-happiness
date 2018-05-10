@@ -1,0 +1,23 @@
+0xA6 - AB - top to bottom rows. each of the lowest 7 set bits corresponds to is enemy active
+0xAC - AE - player score. each digit of score is stored in 4 bits, starting with 0xAC high 4 bits
+0xAF - wave number - controls number of enemies flying and number in bottom right
+0xB1 - is player's bullet active? maybe something else also, but active = 0x1F, inactive = 0x00 it seems
+0xB2 - seems to be 0 until player dies, then set to 0b10000001
+0xB3 - seems to always be set to 0x01
+0xB4 - counter from 0 to 2, incremeting once every frame, then rolling around
+0xB5 - rows of enemies remaining. as soon as one line dies, it is removed from 0xB5
+0xB6 - columns of enemies on either side dead. controls how far left or right the columns will shift one way or the other before they switch strafing directions
+0xB7 - ???
+0xB8 - ??? - seems to be permanently set to 0
+0xB9 - player lives remaining. starts at 3 until player first spawns, so first wave, player has 2 and last life = 0
+0xBA - ??? - seems to be permanently set to 0
+0xBB - BF - ???
+0xC0 - C2 - starting with C0, looks to be x coord of currently moving ship. once ship hits bottom, position is transfered to register before, wrapping
+0xC3 - C4 - seem to be used as maybe a counter during AI playing before game starts?
+0xC5 - C7 - starting with C6, looks to be y coord of currently moving ship. once ship hits bottom, position is transfered to register before, wrapping (eg C6->C5, C5->C7, C7->C6). between 0 and 256
+0xE4 - player position
+0xE5 - something with player death, like a timer counting back from 0xFF
+0xE6 - something set when a new enemy decides to charge
+0xE7 - something to do with enemy bullet? at least part of the byte
+
+E9-EA ? nothing?

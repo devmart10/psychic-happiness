@@ -2,6 +2,7 @@ config.log
 config.mak
 src/**/*/.deps
 src/**/*.o
+src/**/*.obj
 stella
 *.diff
 project.xcworkspace/
