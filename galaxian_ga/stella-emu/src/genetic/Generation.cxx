@@ -11,10 +11,12 @@ Generation::Generation(int genId) :
 	myGenerationId(genId),
 	id(myGenerationId)
 {
-	populationIndex = 0;
 	for (int i = 0; i < POPULATION_SIZE; i++) {
 		population.push_back(new Individual(i));
 	}
+
+	popItr = population.begin();
+	currentPlayer = *popItr;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -27,25 +29,20 @@ Generation::~Generation()
 
 Generation *Generation::spawnNextGeneration()
 {
-	populationIndex = 0;
+	// perform crossover and mutations here
+
 	return new Generation(myGenerationId + 1);
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-Individual *Generation::getCurrentPlayer()
-{
-	return population.at(populationIndex);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 Individual *Generation::getNextPlayer()
 {
-	if (++populationIndex == population.size()) {
-		return nullptr;
-	}
-	return population.at(populationIndex);
+	popItr = next(popItr);
+
+	currentPlayer = (popItr == population.end() ? nullptr : *popItr);
+
+	return currentPlayer;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -46,6 +46,7 @@ public:
 	bool isResetKeyDown();
 	void tick();
 	// void assignEventHandler(unique_ptr<EventHandler>& e);
+
 private:
 	int generationCount;
 	Generation* currentGeneration;

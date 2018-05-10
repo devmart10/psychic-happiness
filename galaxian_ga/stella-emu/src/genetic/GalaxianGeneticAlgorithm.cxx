@@ -47,8 +47,8 @@ void GalaxianGeneticAlgorithm::initializeAlgorithm() {
 
 void GalaxianGeneticAlgorithm::startSession()
 {
-	cout << "starting: gen " << generationCount << ", " << currentGeneration->populationIndex << endl;
-	currentPlayer = currentGeneration->getCurrentPlayer();
+	printf("Starting Generation %d.\n", currentGeneration->id);
+	currentPlayer = currentGeneration->currentPlayer;
 }
 
 void GalaxianGeneticAlgorithm::finishSession()
@@ -56,9 +56,9 @@ void GalaxianGeneticAlgorithm::finishSession()
 	printf("Individual %d fitness: %d\n", currentPlayer->id, currentPlayer->fitness);
 	currentPlayer = currentGeneration->getNextPlayer();
 	if (currentPlayer == nullptr) {
-		int temp = currentGeneration->id;
 		currentGeneration = currentGeneration->spawnNextGeneration();
-		printf("Ending generation %d. Created generation %d.\n", temp, currentGeneration->id);
+		currentPlayer = currentGeneration->currentPlayer;
+		printf("Ending generation %d. Created generation %d.\n", currentGeneration->id - 1, currentGeneration->id);
 	}
 }
 

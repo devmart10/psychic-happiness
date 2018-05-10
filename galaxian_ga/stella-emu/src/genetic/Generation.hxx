@@ -3,23 +3,23 @@
 
 #define POPULATION_SIZE 4
 
-#include <vector>
+#include <list>
 #include "Individual.hxx"
 
 class Generation {
 public:	
-	int populationIndex;
-	
 	Generation(int genId);
 	~Generation();
 	Generation * spawnNextGeneration();
-	Individual * getCurrentPlayer();
 	Individual * getNextPlayer();
 	const int &id;
+	Individual *currentPlayer;
 
 private:
 	int myGenerationId;
-	std::vector<Individual *> population;
+
+	std::list<Individual *>::iterator popItr;
+	std::list<Individual *> population;
 };
 
 #endif
