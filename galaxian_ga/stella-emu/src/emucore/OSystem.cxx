@@ -705,10 +705,13 @@ void OSystem::mainLoop()
 				  myConsole->resetGame();
 			  }
 
+			  //printf("Charger loc: (%d, %d)\n", myConsole->retreiveByte(0xC2), myConsole->retreiveByte(0xC7));
+
+			  /*
 			  printf("Score: %d, Player Position: %d\n", 
 				  myGalaxianGeneticAlgorithm->getPlayerScore(), 
 				  myGalaxianGeneticAlgorithm->getPlayerPosition());
-
+				  */
 			  /*
 			  printf("0xC0: %d, 0xC1: %d, 0xC2: %d\n",
 				  myConsole->retreiveByte(0xC0),

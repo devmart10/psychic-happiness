@@ -12,9 +12,9 @@
 0xB9 - player lives remaining. starts at 3 until player first spawns, so first wave, player has 2 and last life = 0
 0xBA - ??? - seems to be permanently set to 0
 0xBB - BF - ???
-0xC0 - C2 - starting with C0, looks to be x coord of currently moving ship. once ship hits bottom, position is transfered to register before, wrapping
+0xC0 - C2 - starting with C2, looks to be x coord of currently moving ship. once ship hits bottom, position is transfered to register before, wrapping
 0xC3 - C4 - seem to be used as maybe a counter during AI playing before game starts?
-0xC5 - C7 - starting with C6, looks to be y coord of currently moving ship. once ship hits bottom, position is transfered to register before, wrapping (eg C6->C5, C5->C7, C7->C6). between 0 and 256
+0xC5 - C7 - starting with C7, looks to be y coord of currently moving ship. once ship hits bottom, position is transfered to register before, wrapping (eg C6->C5, C5->C7, C7->C6). between 0 and 256
 0xE4 - player position
 0xE5 - something with player death, like a timer counting back from 0xFF
 0xE6 - something set when a new enemy decides to charge

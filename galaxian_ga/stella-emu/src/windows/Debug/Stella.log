@@ -1,6 +1,2 @@
 ﻿  OSystem.cxx
-c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\emucore\osystem.cxx(708): warning C4473: 'printf' : not enough arguments passed for format string
-  c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\emucore\osystem.cxx(708): note: placeholders and their parameters expect 3 variadic arguments, but 2 were provided
-  c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\emucore\osystem.cxx(708): note: the missing variadic argument 3 is required by format string '%d'
-  GalaxianGeneticAlgorithm.cxx
   Stella.vcxproj -> C:\Users\Twitch-PCLaptop\Desktop\SeniorProject\galaxian_ga\stella-emu\src\windows\Debug\Stella.exe
