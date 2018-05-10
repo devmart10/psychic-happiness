@@ -23,6 +23,7 @@ class CheatManager;
 #endif
 #ifdef GENETIC_ENABLED
 class GalaxianGeneticAlgorithm;
+class GalaxianGameState;
 #endif
 class CommandMenu;
 class Console;
@@ -223,6 +224,7 @@ class OSystem
 	  @return The GalaxianGeneticAlgorithm object
 	*/
 	GalaxianGeneticAlgorithm& geneticAlgorithm() const { return *myGalaxianGeneticAlgorithm; }
+	//GalaxianGameState& gameState() const { return *myGalaxianGameState; }
 #endif
 
     /**
@@ -456,7 +458,8 @@ class OSystem
   protected:
 #ifdef GENETIC_ENABLED
 	// Pointer to the GalaxianGeneticAlgorithm object
-	unique_ptr<GalaxianGeneticAlgorithm> myGalaxianGeneticAlgorithm;
+	  unique_ptr<GalaxianGeneticAlgorithm> myGalaxianGeneticAlgorithm;
+	  GalaxianGameState* myGalaxianGameState;
 #endif
 	
     // Pointer to the EventHandler object

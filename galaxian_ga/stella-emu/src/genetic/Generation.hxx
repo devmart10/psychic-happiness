@@ -12,9 +12,9 @@ public:
 	
 	Generation();
 	~Generation();
-	Generation* createNewGeneration();
-	Individual* getCurrentPlayer();
-	Individual* getNextPlayer();
+	Generation * createNewGeneration();
+	Individual * getCurrentPlayer();
+	Individual * getNextPlayer();
 private:
 	std::vector<Individual *> population;
 };

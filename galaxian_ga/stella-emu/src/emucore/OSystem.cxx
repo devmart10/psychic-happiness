@@ -37,6 +37,7 @@
 
 #ifdef GENETIC_ENABLED
 #include "GalaxianGeneticAlgorithm.hxx"
+#include "GalaxianGameState.hxx"
 #endif
 
 #include "FSNode.hxx"
@@ -142,7 +143,8 @@ bool OSystem::create()
 #endif
 
 #ifdef GENETIC_ENABLED
-	myGalaxianGeneticAlgorithm = make_unique<GalaxianGeneticAlgorithm>();
+	myGalaxianGameState = new GalaxianGameState();
+	myGalaxianGeneticAlgorithm = make_unique<GalaxianGeneticAlgorithm>(*this, myGalaxianGameState);
 	myGalaxianGeneticAlgorithm->initializeAlgorithm();
 #endif
 
@@ -682,8 +684,8 @@ void OSystem::mainLoop()
 {
 	if (mySettings->getString("timing") == "sleep")
 	{
-		int framesSinceTick = 0;
 		bool firstBack = false;
+		int framesSinceTick = 0;
 
 		// Sleep-based wait: good for CPU, bad for graphical sync
 		for (;;)
@@ -694,12 +696,13 @@ void OSystem::mainLoop()
 			if (myQuitLoop) break;  // Exit if the user wants to quit
 
 #ifdef GENETIC_ENABLED
+			myGalaxianGeneticAlgorithm->tick();
 			if (myEventHandler->state() == EventHandlerState::EMULATION) {
 				if (firstBack == false) {
 					firstBack = true;
 					myGalaxianGeneticAlgorithm->startSession();
 				}
-				
+
 				if (framesSinceTick++ >= FRAMES_PER_UPDATE) {
 					framesSinceTick = 0;
 					// clear active controls
@@ -724,12 +727,13 @@ void OSystem::mainLoop()
 				if (myGalaxianGeneticAlgorithm->isMemDumpKeyDown()) {
 					cout << "Mem dump requested." << endl;
 				}
-
 			}
 			else if (myEventHandler->state() == EventHandlerState::LAUNCHER) {
 				if (firstBack) {
 					firstBack = false;
 					myGalaxianGeneticAlgorithm->finishSession();
+					
+					reloadConsole();
 				}
 			}
 			

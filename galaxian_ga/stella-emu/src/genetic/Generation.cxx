@@ -9,6 +9,7 @@ using namespace std;
 
 Generation::Generation()
 {
+
 	populationIndex = 0;
 	for (int i = 0; i < POPULATION_SIZE; i++) {
 		population.push_back(new Individual());

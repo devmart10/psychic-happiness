@@ -25,7 +25,9 @@ using namespace std;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-GalaxianGeneticAlgorithm::GalaxianGeneticAlgorithm() {
+GalaxianGeneticAlgorithm::GalaxianGeneticAlgorithm(OSystem& sys, GalaxianGameState* gs)
+	: osys(sys), myState(gs)
+{
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -50,10 +52,12 @@ void GalaxianGeneticAlgorithm::startSession()
 
 void GalaxianGeneticAlgorithm::finishSession()
 {
+	cout << "final fitness: " << currentPlayer->getFitness() << endl;
 	currentPlayer = currentGeneration->getNextPlayer();
 	if (currentPlayer == nullptr) {
 		cout << "ending generation " << generationCount++ << endl;
 		currentGeneration = currentGeneration->createNewGeneration();
+		cout << "created generation " << generationCount << endl;
 	}
 }
 
@@ -85,4 +89,7 @@ bool GalaxianGeneticAlgorithm::isMemDumpKeyDown() {
 	return false;
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+void GalaxianGeneticAlgorithm::tick()
+{
+	currentPlayer->tick(myState);
+}

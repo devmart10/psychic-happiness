@@ -19,8 +19,11 @@
 #define GALAXIAN_GENETIC_ALGORITHM_HXX
 
 #include <memory>
+#include "EventHandler.hxx"
+#include "OSystem.hxx"
 #include "genetic_settings.hxx"
 #include "Generation.hxx"
+#include "GalaxianGameState.hxx"
 
 class Generation;
 
@@ -29,18 +32,21 @@ public:
 	/**
 	Create a new genetic algorithm parent object
 	*/
-	GalaxianGeneticAlgorithm();
+	GalaxianGeneticAlgorithm(OSystem& sys, GalaxianGameState* gs);
 	virtual ~GalaxianGeneticAlgorithm();
 
 protected:
 
 public:
+	OSystem & osys;
+	GalaxianGameState* myState;
 	void initializeAlgorithm();
 	void startSession();
 	void finishSession();
 	int getDirection();
 	bool isMemDumpKeyDown();
-
+	void tick();
+	// void assignEventHandler(unique_ptr<EventHandler>& e);
 private:
 	int generationCount;
 	Generation* currentGeneration;

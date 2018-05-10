@@ -1,11 +1,10 @@
 #include <iostream>
 #include <Windows.h>
+#include <memory>
 
 #include "Individual.hxx"
 
 using namespace std;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 Individual::Individual()
 {
@@ -20,7 +19,7 @@ Individual::~Individual()
 int Individual::getDirection()
 {
 	int dir = 0 + (rand() % 4);
-	// cout << dir << endl;
+	cout << dir << endl;
 	return dir;
 }
 
@@ -34,4 +33,7 @@ double Individual::getFitness()
 	return fitness;
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+void Individual::tick(GalaxianGameState* gs)
+{
+	//cout << "ticking" << endl;
+}
