@@ -1,2 +1,8 @@
 *.obj
+<<<<<<< HEAD
 *.exe
+=======
+/galaxian_ga/stella-emu/src/windows
+*.vcxproj*
+*.vs/*
+>>>>>>> 2ecff67b40f262560b4e45a5844f8c13924840e6

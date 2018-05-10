@@ -17,6 +17,7 @@
 
 #include <iostream>
 #include <Windows.h>
+#include <memory>
 
 #include "Console.hxx"
 #include "bspf.hxx"
@@ -26,7 +27,14 @@ using namespace std;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+<<<<<<< HEAD
 GalaxianGeneticAlgorithm::GalaxianGeneticAlgorithm() { }
+=======
+GalaxianGeneticAlgorithm::GalaxianGeneticAlgorithm(OSystem& sys, GalaxianGameState* gs)
+	: osys(sys), myState(gs)
+{
+}
+>>>>>>> 2ecff67b40f262560b4e45a5844f8c13924840e6
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -36,6 +44,7 @@ GalaxianGeneticAlgorithm::~GalaxianGeneticAlgorithm() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void GalaxianGeneticAlgorithm::initializeAlgorithm() {
+<<<<<<< HEAD
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -61,12 +70,40 @@ int GalaxianGeneticAlgorithm::getPlayerScore() {
 
 bool GalaxianGeneticAlgorithm::isPlayerDead() {
 	return myConsole->retreiveByte(0xB2) != 0;
+=======
+	cout << "initializing genetic algorithm" << endl;
+
+	generationCount = 0;
+	currentGeneration = new Generation();
+}
+
+void GalaxianGeneticAlgorithm::startSession()
+{
+	cout << "starting: gen " << generationCount << ", " << currentGeneration->populationIndex << endl;
+	currentPlayer = currentGeneration->getCurrentPlayer();
+}
+
+void GalaxianGeneticAlgorithm::finishSession()
+{
+	cout << "final fitness: " << currentPlayer->getFitness() << endl;
+	currentPlayer = currentGeneration->getNextPlayer();
+	if (currentPlayer == nullptr) {
+		cout << "ending generation " << generationCount++ << endl;
+		currentGeneration = currentGeneration->createNewGeneration();
+		cout << "created generation " << generationCount << endl;
+	}
+>>>>>>> 2ecff67b40f262560b4e45a5844f8c13924840e6
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+<<<<<<< HEAD
 int GalaxianGeneticAlgorithm::getPlayerPosition() {
 	return myConsole->retreiveByte(0xE4);
+=======
+int GalaxianGeneticAlgorithm::getDirection() {
+	return currentPlayer->getDirection();
+>>>>>>> 2ecff67b40f262560b4e45a5844f8c13924840e6
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -111,4 +148,7 @@ bool GalaxianGeneticAlgorithm::isResetKeyDown() {
 	return false;
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+void GalaxianGeneticAlgorithm::tick()
+{
+	currentPlayer->tick(myState);
+}
