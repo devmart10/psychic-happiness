@@ -19,7 +19,6 @@
 #include <Windows.h>
 #include <memory>
 
-#include "Console.hxx"
 #include "bspf.hxx"
 #include "GalaxianGeneticAlgorithm.hxx"
 
@@ -27,8 +26,8 @@ using namespace std;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-GalaxianGeneticAlgorithm::GalaxianGeneticAlgorithm(OSystem& sys, GalaxianGameState* gs)
-	: osys(sys), myState(gs)
+GalaxianGeneticAlgorithm::GalaxianGeneticAlgorithm(GalaxianGameState* gs)
+	: myGalaxianGameState(gs)
 {
 }
 
@@ -48,31 +47,6 @@ void GalaxianGeneticAlgorithm::initializeAlgorithm() {
 	startSession();
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-void GalaxianGeneticAlgorithm::setConsole(Console *console) {
-	myConsole = console;
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-int GalaxianGeneticAlgorithm::getPlayerScore() {
-	int tens = myConsole->retreivePartialByte(0xAE, 4, 0);
-	int hundreds = myConsole->retreivePartialByte(0xAD, 4, 4);
-	int thousands = myConsole->retreivePartialByte(0xAD, 4, 0);
-	int ten_thousands = myConsole->retreivePartialByte(0xAC, 4, 4);
-	int hun_thousands = myConsole->retreivePartialByte(0xAC, 4, 0);
-
-	return tens * 10 + hundreds * 100 + thousands * 1000 + 
-		   ten_thousands * 10000 + hun_thousands * 100000;
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-bool GalaxianGeneticAlgorithm::isPlayerDead() {
-	return myConsole->retreiveByte(0xB2) != 0;
-}
-
 void GalaxianGeneticAlgorithm::startSession()
 {
 	cout << "starting: gen " << generationCount << ", " << currentGeneration->populationIndex << endl;
@@ -88,12 +62,6 @@ void GalaxianGeneticAlgorithm::finishSession()
 		currentGeneration = currentGeneration->createNewGeneration();
 		cout << "created generation " << generationCount << endl;
 	}
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-int GalaxianGeneticAlgorithm::getPlayerPosition() {
-	return myConsole->retreiveByte(0xE4);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -124,10 +92,13 @@ bool GalaxianGeneticAlgorithm::isRShiftKeyDown() {
 	return false;
 }
 
-void GalaxianGeneticAlgorithm::tick()
-{
-	//currentPlayer->tick(myState);
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+void GalaxianGeneticAlgorithm::tick() {
+	currentPlayer->tick(myGalaxianGameState);
 }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 bool GalaxianGeneticAlgorithm::isResetKeyDown() {
 	static bool pressedLastFrame = false;
@@ -148,3 +119,5 @@ bool GalaxianGeneticAlgorithm::isResetKeyDown() {
 
 	return false;
 }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

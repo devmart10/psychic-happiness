@@ -32,24 +32,18 @@ public:
 	/**
 	Create a new genetic algorithm parent object
 	*/
-	GalaxianGeneticAlgorithm(OSystem& sys, GalaxianGameState* gs);
+	GalaxianGeneticAlgorithm(GalaxianGameState* gs);
 	virtual ~GalaxianGeneticAlgorithm();
 
 protected:
 
 public:
-	OSystem & osys;
-	GalaxianGameState* myState;
 	void initializeAlgorithm();
 	void startSession();
 	void finishSession();
 	int getDirection();
 	bool isRShiftKeyDown();
 	bool isResetKeyDown();
-	int getPlayerScore();
-	bool isPlayerDead();
-	int getPlayerPosition();
-	void setConsole(Console *console);
 	void tick();
 	// void assignEventHandler(unique_ptr<EventHandler>& e);
 private:
@@ -57,6 +51,7 @@ private:
 	Generation* currentGeneration;
 	Individual* currentPlayer;
 	Console *myConsole;
+	GalaxianGameState* myGalaxianGameState;
 };
 
 #endif

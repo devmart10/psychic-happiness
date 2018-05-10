@@ -144,7 +144,7 @@ bool OSystem::create()
 
 #ifdef GENETIC_ENABLED
 	myGalaxianGameState = new GalaxianGameState();
-	myGalaxianGeneticAlgorithm = make_unique<GalaxianGeneticAlgorithm>(*this, myGalaxianGameState);
+	myGalaxianGeneticAlgorithm = make_unique<GalaxianGeneticAlgorithm>(myGalaxianGameState);
 	myGalaxianGeneticAlgorithm->initializeAlgorithm();
 #endif
 
@@ -396,7 +396,7 @@ string OSystem::createConsole(const FilesystemNode& rom, const string& md5sum,
     myCheatManager->loadCheats(myRomMD5);
   #endif
   #ifdef GENETIC_ENABLED
-	myGalaxianGeneticAlgorithm->setConsole(myConsole.get());
+	myGalaxianGameState->setConsole(myConsole.get());
   #endif
     myEventHandler->reset(EventHandlerState::EMULATION);
     myEventHandler->setMouseControllerMode(mySettings->getString("usemouse"));
@@ -698,10 +698,14 @@ void OSystem::mainLoop()
 
 		  #ifdef GENETIC_ENABLED
 			if (myEventHandler->state() == EventHandlerState::EMULATION) {
+				myGalaxianGameState->tick();
+
 				if (framesSinceTick++ >= FRAMES_PER_UPDATE) {
 					framesSinceTick = 0;
 
-					if (myGalaxianGeneticAlgorithm->isPlayerDead() || myGalaxianGeneticAlgorithm->isResetKeyDown()) {
+					myGalaxianGeneticAlgorithm->tick();
+
+					if (myGalaxianGameState->isPlayerDead() || myGalaxianGeneticAlgorithm->isResetKeyDown()) {
 						myGalaxianGeneticAlgorithm->finishSession();
 
 						myConsole->resetGame();

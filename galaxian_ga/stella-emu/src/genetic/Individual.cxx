@@ -7,9 +7,8 @@
 using namespace std;
 
 Individual::Individual()
+	: fitness(0)
 {
-	// dna = double[10];
-	calcFitness();
 }
 
 Individual::~Individual()
@@ -23,9 +22,9 @@ int Individual::getDirection()
 	return dir;
 }
 
-void Individual::calcFitness()
+void Individual::calculateFitness(GalaxianGameState *gs)
 {
-	fitness = 0.0;
+	fitness = gs->getPlayerScore();
 }
 
 double Individual::getFitness()
@@ -35,5 +34,5 @@ double Individual::getFitness()
 
 void Individual::tick(GalaxianGameState* gs)
 {
-	//cout << "ticking" << endl;
+	calculateFitness(gs);
 }

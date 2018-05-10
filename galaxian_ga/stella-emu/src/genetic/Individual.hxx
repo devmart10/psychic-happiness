@@ -12,9 +12,9 @@ public:
 	Individual();
 	~Individual();
 	int getDirection();
-	void calcFitness();
+	void calculateFitness(GalaxianGameState *gs);
 	double getFitness();
-	void tick(GalaxianGameState* gs);
+	void tick(GalaxianGameState *gs);
 private:
 	double fitness;
 	double* dna;
