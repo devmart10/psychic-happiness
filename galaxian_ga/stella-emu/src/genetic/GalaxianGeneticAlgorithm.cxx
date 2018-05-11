@@ -21,6 +21,9 @@
 
 #include "bspf.hxx"
 #include "GalaxianGeneticAlgorithm.hxx"
+#include "Pool.hxx"
+#include "Species.hxx"
+#include "Genome.hxx"
 
 using namespace std;
 
@@ -39,33 +42,42 @@ GalaxianGeneticAlgorithm::~GalaxianGeneticAlgorithm() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void GalaxianGeneticAlgorithm::initializeAlgorithm() {
-	generationCount = 0;
-	currentGeneration = new Generation(generationCount);
+	myPool = new Pool();
 
-	startSession();
-}
-
-void GalaxianGeneticAlgorithm::startSession()
-{
-	printf("Starting Generation %d.\n", currentGeneration->id);
-	currentPlayer = currentGeneration->currentPlayer;
-}
-
-void GalaxianGeneticAlgorithm::finishSession()
-{
-	printf("Individual %d fitness: %d\n", currentPlayer->id, currentPlayer->fitness);
-	currentPlayer = currentGeneration->getNextPlayer();
-	if (currentPlayer == nullptr) {
-		currentGeneration = currentGeneration->spawnNextGeneration();
-		currentPlayer = currentGeneration->currentPlayer;
-		printf("Ending generation %d. Created generation %d.\n", currentGeneration->id - 1, currentGeneration->id);
-	}
+	myPool->initialize();
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-int GalaxianGeneticAlgorithm::getDirection() {
-	return currentPlayer->getDirection();
+map<int, bool> GalaxianGeneticAlgorithm::evaluate() {
+	Species *currentSpecies = myPool->species[myPool->currentSpecies];
+	Genome *currentGenome = currentSpecies->genomes[myPool->currentGenome];
+
+	vector<double> inputs = myGalaxianGameState->getInputs();
+	map<int, bool> outputs = currentGenome->evaluateNetwork(inputs);
+
+	if (outputs[BUTTON_LEFT] && outputs[BUTTON_RIGHT]) {
+		outputs[BUTTON_LEFT] = outputs[BUTTON_RIGHT] = false;
+	}
+
+	return outputs;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+void GalaxianGeneticAlgorithm::startSession()
+{
+
+}
+
+void GalaxianGeneticAlgorithm::finishSession()
+{
+	Species *curSpecies = myPool->species[myPool->currentSpecies];
+	Genome *curGenome = curSpecies->genomes[myPool->currentGenome];
+	printf("Generation %d, Species %d, Genome %d fitness: %d\n", 
+		myPool->generation, myPool->currentSpecies, myPool->currentGenome, curGenome->fitness);
+
+	myPool->nextGenome();
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -88,12 +100,6 @@ bool GalaxianGeneticAlgorithm::isRShiftKeyDown() {
 	}
 
 	return false;
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-void GalaxianGeneticAlgorithm::tick() {
-	currentPlayer->tick(myGalaxianGameState);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

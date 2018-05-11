@@ -40,8 +40,14 @@ void GalaxianGameState::tick() {
 		}
 	}
 	else {
-		gameRunning = myConsole->retreiveByte(0xB9) < 3;
+		gameRunning = isGameRunning();
 	}
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+bool GalaxianGameState::isGameRunning() {
+	return myConsole->retreiveByte(0xB9) < 3;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -77,6 +83,16 @@ int GalaxianGameState::getPlayerScore() {
 
 bool GalaxianGameState::isPlayerDead() {
 	return myConsole->retreiveByte(0xB2) != 0;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+vector<double> GalaxianGameState::getInputs() {
+	vector<double> inputs;
+
+	// TODO
+
+	return inputs;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

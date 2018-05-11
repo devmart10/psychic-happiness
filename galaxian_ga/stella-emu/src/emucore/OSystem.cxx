@@ -687,7 +687,10 @@ void OSystem::mainLoop()
 {
 	if (mySettings->getString("timing") == "sleep")
 	{
+	  #ifdef GENETIC_ENABLED
 		int framesSinceTick = 0;
+		bool gameStarted = false, restarting = false;
+	  #endif
 
 		// Sleep-based wait: good for CPU, bad for graphical sync
 		for (;;) {
@@ -698,22 +701,35 @@ void OSystem::mainLoop()
 
 		  #ifdef GENETIC_ENABLED
 			if (myEventHandler->state() == EventHandlerState::EMULATION) {
-				myGalaxianGameState->tick();
+				if (gameStarted) {
+					myGalaxianGameState->tick();
 
-				if (framesSinceTick++ >= FRAMES_PER_UPDATE) {
-					framesSinceTick = 0;
+					if (framesSinceTick++ >= FRAMES_PER_UPDATE) {
+						framesSinceTick = 0;
 
-					myGalaxianGeneticAlgorithm->tick();
+						if (myGalaxianGameState->isPlayerDead() || myGalaxianGeneticAlgorithm->isResetKeyDown()) {
+							myGalaxianGeneticAlgorithm->finishSession();
 
-					if (myGalaxianGameState->isPlayerDead() || myGalaxianGeneticAlgorithm->isResetKeyDown()) {
-						myGalaxianGeneticAlgorithm->finishSession();
+							myConsole->resetGame();
+						}
 
-						myConsole->resetGame();
+						if (myGalaxianGameState->isGameRunning()) {
+							std::map<int, bool> outputs = myGalaxianGeneticAlgorithm->evaluate();
+
+							myEventHandler->handleEvent(Event::Type::JoystickZeroLeft, outputs[BUTTON_LEFT] ? 1 : 0);
+							myEventHandler->handleEvent(Event::Type::JoystickZeroRight, outputs[BUTTON_RIGHT] ? 1 : 0);
+							myEventHandler->handleEvent(Event::Type::JoystickZeroFire, outputs[BUTTON_FIRE] ? 1 : 0);
+						}
 					}
 				}
+				else {
+					if (myGalaxianGeneticAlgorithm->isResetKeyDown()) {
+						myConsole->resetGame();
 
-				if (myGalaxianGeneticAlgorithm->isRShiftKeyDown()) {
+						myEventHandler->handleEvent(Event::Type::JoystickZeroFire, 1);
 
+						restarting = true;
+					}
 				}
 			}
 		  #endif

@@ -22,10 +22,10 @@
 #include "EventHandler.hxx"
 #include "OSystem.hxx"
 #include "genetic_settings.hxx"
-#include "Generation.hxx"
 #include "GalaxianGameState.hxx"
 
-class Generation;
+class Neuron;
+class Pool;
 
 class GalaxianGeneticAlgorithm {
 public:	
@@ -41,16 +41,12 @@ public:
 	void initializeAlgorithm();
 	void startSession();
 	void finishSession();
-	int getDirection();
 	bool isRShiftKeyDown();
 	bool isResetKeyDown();
-	void tick();
-	// void assignEventHandler(unique_ptr<EventHandler>& e);
+	std::map<int, bool> evaluate();
 
 private:
-	int generationCount;
-	Generation* currentGeneration;
-	Individual* currentPlayer;
+	Pool *myPool;
 	Console *myConsole;
 	GalaxianGameState* myGalaxianGameState;
 };

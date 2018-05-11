@@ -15,12 +15,14 @@ public:
 
 	int getPlayerScore();
 	bool isPlayerDead();
+	bool isGameRunning();
 	int getPlayerPosition();
 	std::vector<std::pair<int, int>> getEnemyPositions();
 
 	void reset();
 	void tick();
 	void setConsole(Console *);
+	std::vector<double> getInputs();
 private:
 	Console * myConsole;
 
