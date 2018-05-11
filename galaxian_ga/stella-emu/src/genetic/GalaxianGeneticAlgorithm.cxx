@@ -76,7 +76,7 @@ void GalaxianGeneticAlgorithm::finishSession()
 	Genome *curGenome = curSpecies->genomes[myPool->currentGenome];
 	curGenome->fitness = myGalaxianGameState->getPlayerScore();
 	printf("Generation %d, Species %d, Genome %d fitness: %d\n", 
-		myPool->generation, myPool->currentSpecies, myPool->currentGenome, curGenome->fitness);
+		myPool->generation, myPool->currentSpecies, myPool->currentGenome, (int)curGenome->fitness);
 
 	myPool->nextGenome();
 }

@@ -1,6 +1,7 @@
 #include "Species.hxx"
 #include "Genome.hxx"
 #include "Gene.hxx"
+#include "Pool.hxx"
 #include <algorithm>
 
 #define CROSSOVER_CHANCE 0.75
@@ -9,10 +10,11 @@ using namespace std;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-Species::Species() :
+Species::Species(Pool *_pool) :
 	topFitness(0),
 	staleness(0),
-	averageFitness(0)
+	averageFitness(0),
+	pool(_pool)
 {
 }
 
@@ -30,7 +32,7 @@ Genome *Species::crossover(Genome *g1, Genome *g2) {
 		g1 = temp;
 	}
 
-	Genome *newGenome = new Genome();
+	Genome *newGenome = new Genome(pool);
 
 	map<int, Gene *> innovations2;
 	for (Gene *gene : g2->genes) {

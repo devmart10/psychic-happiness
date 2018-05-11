@@ -19,7 +19,7 @@ public:
 	void removeStaleSpecies();
 	void removeWeakSpecies();
 
-	int newInnovaation();
+	int newInnovation();
 	void rankGlobally();
 	double totalAverageFitness();
 	void nextGenome();

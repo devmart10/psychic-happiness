@@ -30,7 +30,7 @@ Pool::Pool() :
 	innovation(NUM_OUTPUTS)
 {
 	for (int i = 0; i < POPULATION_SIZE; i++) {
-		Genome *genome = new Genome();
+		Genome *genome = new Genome(this);
 		genome->initBasicGenome();
 		addToSpecies(genome);
 	}
@@ -61,7 +61,7 @@ void Pool::addToSpecies(Genome *genome) {
 	}
 
 	if (!found) {
-		Species *newSpecies = new Species();
+		Species *newSpecies = new Species(this);
 		newSpecies->genomes.push_back(genome);
 		species.push_back(newSpecies);
 	}
@@ -127,7 +127,7 @@ double weights(vector<Gene *> g1, vector<Gene *> g2) {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-int Pool::newInnovaation() {
+int Pool::newInnovation() {
 	return ++innovation;
 }
 

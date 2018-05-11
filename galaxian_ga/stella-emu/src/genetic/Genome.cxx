@@ -5,6 +5,7 @@
 #include "Gene.hxx"
 #include "Neuron.hxx"
 #include "Genome.hxx"
+#include "Pool.hxx"
 
 #include "genetic_settings.hxx"
 
@@ -25,11 +26,12 @@ bool containsLink(vector<Gene *> genes, Gene *g);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-Genome::Genome() :
+Genome::Genome(Pool *_pool) :
 	fitness(0),
 	adjustedFitness(0),
 	maxNeuron(0),
-	globalRank(0)
+	globalRank(0),
+	pool(_pool)
 {
 	mutationRates["connections"] = MUTATE_CONNECTIONS_CHANCE;
 	mutationRates["link"] = MUTATE_LINK_CHANCE;
@@ -110,7 +112,7 @@ void Genome::mutate() {
 	p = mutationRates["disable"];
 	while (p-- > 0) {
 		if (rand() / (double)RAND_MAX < p) {
-			linkMutate(false);
+			enableDisableMutate(false);
 		}
 	}
 }
@@ -159,8 +161,10 @@ void Genome::linkMutate(bool forceBias) {
 		return;
 	}
 
-	//TODO: newLink->innovation = newInnovation();
+	newLink->innovation = pool->newInnovation();
 	newLink->weight = (rand() / (double)RAND_MAX) * 4 - 2;
+
+	genes.push_back(newLink);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -187,8 +191,7 @@ int randomNeuron(vector<Gene *> genes, bool isInput) {
 		}
 	}
 
-	int count = neurons.size();
-	int n = rand() % (count) + 1;
+	int n = (rand() / (double)RAND_MAX) * neurons.size();
 
 	for (pair<int, bool> p : neurons) {
 		if (--n == 0) {

@@ -1,3 +1,10 @@
-﻿  GalaxianGeneticAlgorithm.cxx
-c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\galaxiangeneticalgorithm.cxx(78): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 4 has type 'double'
+﻿  Genome.cxx
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\genome.cxx(84): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\genome.cxx(91): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\genome.cxx(98): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\genome.cxx(105): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\genome.cxx(112): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\genome.cxx(194): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\genome.cxx(232): warning C4244: 'argument': conversion from 'double' to 'const unsigned int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\genome.cxx(245): warning C4244: 'argument': conversion from 'double' to 'const unsigned int', possible loss of data
   Stella.vcxproj -> C:\Users\Twitch-PCLaptop\Desktop\SeniorProject\galaxian_ga\stella-emu\src\windows\Debug\Stella.exe

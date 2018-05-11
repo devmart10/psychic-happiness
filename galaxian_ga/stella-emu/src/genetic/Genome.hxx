@@ -10,10 +10,11 @@
 class GalaxianGameState;
 class Gene;
 class Neuron;
+class Pool;
 
 class Genome {
 public:
-	Genome();
+	Genome(Pool *);
 	Genome(const Genome &oldObj);
 	~Genome();
 
@@ -38,6 +39,7 @@ public:
 	std::map<std::string, double> mutationRates;
 
 private:
+	Pool *pool;
 };
 
 #endif

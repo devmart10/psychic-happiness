@@ -1,13 +1,14 @@
 #pragma once
 
 class Genome;
+class Pool;
 
 #include <vector>
 
 class Species {
 
 public:
-	Species();
+	Species(Pool *);
 	~Species();
 
 	Genome *crossover(Genome *g1, Genome *g2);
@@ -20,4 +21,5 @@ public:
 	double averageFitness;
 
 private:
+	Pool *pool;
 };
