@@ -1,2 +1,3 @@
-﻿  OSystem.cxx
+﻿  GalaxianGeneticAlgorithm.cxx
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\galaxiangeneticalgorithm.cxx(78): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 4 has type 'double'
   Stella.vcxproj -> C:\Users\Twitch-PCLaptop\Desktop\SeniorProject\galaxian_ga\stella-emu\src\windows\Debug\Stella.exe

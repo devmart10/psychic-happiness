@@ -15,6 +15,7 @@ public:
 
 	int getPlayerScore();
 	bool isPlayerDead();
+	bool isPlayerBulletActive();
 	bool isGameRunning();
 	int getPlayerPosition();
 	std::vector<std::pair<int, int>> getEnemyPositions();

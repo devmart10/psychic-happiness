@@ -43,7 +43,7 @@ Pool::~Pool() {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-void Pool::initialize() {
+void Pool::initializeRun() {
 	species[currentSpecies]->genomes[currentGenome]->generateNetwork();
 }
 
@@ -265,9 +265,9 @@ void Pool::createNewGeneration() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void Pool::nextGenome() {
-	if (++currentGenome > species[currentSpecies]->genomes.size()) {
+	if (++currentGenome >= species[currentSpecies]->genomes.size()) {
 		currentGenome = 0;
-		if (++currentSpecies > species.size()) {
+		if (++currentSpecies >= species.size()) {
 			createNewGeneration();
 			currentSpecies = 0;
 		}

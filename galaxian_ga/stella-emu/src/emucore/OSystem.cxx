@@ -689,7 +689,7 @@ void OSystem::mainLoop()
 	{
 	  #ifdef GENETIC_ENABLED
 		int framesSinceTick = 0;
-		bool gameStarted = false, restarting = false;
+		bool gameStarted = false;
 	  #endif
 
 		// Sleep-based wait: good for CPU, bad for graphical sync
@@ -711,14 +711,18 @@ void OSystem::mainLoop()
 							myGalaxianGeneticAlgorithm->finishSession();
 
 							myConsole->resetGame();
-						}
 
-						if (myGalaxianGameState->isGameRunning()) {
+							myEventHandler->handleEvent(Event::Type::JoystickZeroFire, 1);
+
+							myGalaxianGeneticAlgorithm->startSession();
+						} else if (myGalaxianGameState->isGameRunning()) {
 							std::map<int, bool> outputs = myGalaxianGeneticAlgorithm->evaluate();
 
 							myEventHandler->handleEvent(Event::Type::JoystickZeroLeft, outputs[BUTTON_LEFT] ? 1 : 0);
 							myEventHandler->handleEvent(Event::Type::JoystickZeroRight, outputs[BUTTON_RIGHT] ? 1 : 0);
 							myEventHandler->handleEvent(Event::Type::JoystickZeroFire, outputs[BUTTON_FIRE] ? 1 : 0);
+
+							printf("Left: %d, Right: %d, Fire: %d\n", outputs[0], outputs[1], outputs[2]);
 						}
 					}
 				}
@@ -728,7 +732,7 @@ void OSystem::mainLoop()
 
 						myEventHandler->handleEvent(Event::Type::JoystickZeroFire, 1);
 
-						restarting = true;
+						gameStarted = true;
 					}
 				}
 			}

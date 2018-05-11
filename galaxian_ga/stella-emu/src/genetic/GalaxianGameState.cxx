@@ -55,7 +55,16 @@ bool GalaxianGameState::isGameRunning() {
 vector<pair<int, int>> GalaxianGameState::getEnemyPositions() {
 	enemyPositions.clear();
 
-	enemyPositions.push_back(enemyPosMem[enemyPosMemOffset]);
+	for (int i = 0; i < 3; i++) {
+		pair<int, int> pos = enemyPosMem[i];
+
+		if (pos.second == 0) {
+			enemyPositions.push_back(pair<int, int>(-127, -127));
+		}
+		else {
+			enemyPositions.push_back(pos);
+		}
+	}
 
 	return enemyPositions;
 }
@@ -87,10 +96,24 @@ bool GalaxianGameState::isPlayerDead() {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+bool GalaxianGameState::isPlayerBulletActive() {
+	return myConsole->retreiveByte(0xB1) == 0x1F;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 vector<double> GalaxianGameState::getInputs() {
 	vector<double> inputs;
+	vector<pair<int, int>> enemyLocations = getEnemyPositions();
 
-	// TODO
+	inputs.push_back(getPlayerPosition());
+	inputs.push_back(isPlayerBulletActive());
+	inputs.push_back(enemyLocations[0].first);
+	inputs.push_back(enemyLocations[0].second);
+	inputs.push_back(enemyLocations[1].first);
+	inputs.push_back(enemyLocations[1].second);
+	inputs.push_back(enemyLocations[2].first);
+	inputs.push_back(enemyLocations[2].second);
 
 	return inputs;
 }

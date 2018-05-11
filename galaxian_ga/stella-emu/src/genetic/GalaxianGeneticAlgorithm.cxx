@@ -44,7 +44,7 @@ GalaxianGeneticAlgorithm::~GalaxianGeneticAlgorithm() {
 void GalaxianGeneticAlgorithm::initializeAlgorithm() {
 	myPool = new Pool();
 
-	myPool->initialize();
+	myPool->initializeRun();
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -67,13 +67,14 @@ map<int, bool> GalaxianGeneticAlgorithm::evaluate() {
 
 void GalaxianGeneticAlgorithm::startSession()
 {
-
+	myPool->initializeRun();
 }
 
 void GalaxianGeneticAlgorithm::finishSession()
 {
 	Species *curSpecies = myPool->species[myPool->currentSpecies];
 	Genome *curGenome = curSpecies->genomes[myPool->currentGenome];
+	curGenome->fitness = myGalaxianGameState->getPlayerScore();
 	printf("Generation %d, Species %d, Genome %d fitness: %d\n", 
 		myPool->generation, myPool->currentSpecies, myPool->currentGenome, curGenome->fitness);
 

@@ -11,7 +11,7 @@ public:
 	Pool();
 	~Pool();
 
-	void initialize();
+	void initializeRun();
 	void createNewGeneration();
 
 	void cullSpecies(bool cutToOne);
