@@ -179,7 +179,9 @@ void Pool::rankGlobally() {
 double Pool::totalAverageFitness() {
 	double total = 0;
 
+	rankGlobally();
 	for (Species *s : species) {
+		s->calculateAverageFitness();
 		total += s->averageFitness;
 	}
 
@@ -218,7 +220,7 @@ void Pool::removeWeakSpecies() {
 	double sum = totalAverageFitness();
 	for (Species *s : species) {
 		double breed = floor(s->averageFitness / sum * POPULATION_SIZE);
-		if (breed > 1) {
+		if (breed >= 1) {
 			survivors.push_back(s);
 		}
 	}
@@ -260,14 +262,24 @@ void Pool::createNewGeneration() {
 	}
 
 	generation++;
+	printf("Beginning generation %d.\n", generation);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void Pool::nextGenome() {
+	double curFitness = species[currentSpecies]->genomes[currentGenome]->fitness;
+
+	if (curFitness > maxFitness) {
+		maxFitness = curFitness;
+	}
+
 	if (++currentGenome >= species[currentSpecies]->genomes.size()) {
 		currentGenome = 0;
 		if (++currentSpecies >= species.size()) {
+			printf("Finishing generation %d. Average fitness: %.2f, Max fitness: %d.\n",
+				generation, totalAverageFitness() / species.size(), (int)maxFitness);
+			printf("============================================================\n");
 			createNewGeneration();
 			currentSpecies = 0;
 		}

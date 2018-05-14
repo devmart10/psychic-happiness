@@ -46,6 +46,9 @@ public:
 	std::map<int, bool> evaluate();
 
 private:
+	int scoreHolder;
+	int framesSinceLastKill;
+	double sessionTimeFitness = 0;
 	Pool *myPool;
 	Console *myConsole;
 	GalaxianGameState* myGalaxianGameState;

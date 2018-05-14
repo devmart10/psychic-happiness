@@ -24,6 +24,7 @@
 #include "Pool.hxx"
 #include "Species.hxx"
 #include "Genome.hxx"
+#include "Console.hxx"
 
 using namespace std;
 
@@ -56,6 +57,17 @@ map<int, bool> GalaxianGeneticAlgorithm::evaluate() {
 	vector<double> inputs = myGalaxianGameState->getInputs();
 	map<int, bool> outputs = currentGenome->evaluateNetwork(inputs);
 
+	sessionTimeFitness += 0.5;
+	int currentScore = myGalaxianGameState->getPlayerScore();
+	if (currentScore != scoreHolder) {
+		scoreHolder = currentScore;
+		framesSinceLastKill = 0;
+	}
+
+	if (framesSinceLastKill++ > 60) {
+		myGalaxianGameState->killPlayer();
+	}
+
 	if (outputs[BUTTON_LEFT] && outputs[BUTTON_RIGHT]) {
 		outputs[BUTTON_LEFT] = outputs[BUTTON_RIGHT] = false;
 	}
@@ -68,15 +80,19 @@ map<int, bool> GalaxianGeneticAlgorithm::evaluate() {
 void GalaxianGeneticAlgorithm::startSession()
 {
 	myPool->initializeRun();
+	// TODO: Get rid of these magic numbers
+	sessionTimeFitness = 0;
+	scoreHolder = 0;
+	framesSinceLastKill = 0;
 }
 
 void GalaxianGeneticAlgorithm::finishSession()
 {
 	Species *curSpecies = myPool->species[myPool->currentSpecies];
 	Genome *curGenome = curSpecies->genomes[myPool->currentGenome];
-	curGenome->fitness = myGalaxianGameState->getPlayerScore();
-	printf("Generation %d, Species %d, Genome %d fitness: %d\n", 
-		myPool->generation, myPool->currentSpecies, myPool->currentGenome, (int)curGenome->fitness);
+	curGenome->fitness = myGalaxianGameState->getPlayerScore() + sessionTimeFitness;
+	printf("  Species %d, Genome %d fitness: %d\n", 
+		myPool->currentSpecies, myPool->currentGenome, (int)curGenome->fitness);
 
 	myPool->nextGenome();
 }

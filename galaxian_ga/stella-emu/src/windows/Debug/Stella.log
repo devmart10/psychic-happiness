@@ -1,10 +1,18 @@
-﻿  Genome.cxx
-c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\genome.cxx(84): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\genome.cxx(91): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\genome.cxx(98): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\genome.cxx(105): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\genome.cxx(112): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\genome.cxx(194): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\genome.cxx(232): warning C4244: 'argument': conversion from 'double' to 'const unsigned int', possible loss of data
-c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\genome.cxx(245): warning C4244: 'argument': conversion from 'double' to 'const unsigned int', possible loss of data
+﻿  OSystem.cxx
+  GalaxianGeneticAlgorithm.cxx
+  Genome.cxx
+  Pool.cxx
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(85): warning C4244: 'argument': conversion from 'double' to 'const int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(88): warning C4244: 'argument': conversion from 'double' to 'const int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(93): warning C4244: 'argument': conversion from 'double' to 'const int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(98): warning C4244: 'argument': conversion from 'double' to 'const int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(112): warning C4244: 'argument': conversion from 'double' to 'const int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(118): warning C4244: 'argument': conversion from 'double' to 'const int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(119): warning C4244: 'argument': conversion from 'double' to 'const int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(120): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(140): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(256): warning C4244: 'argument': conversion from 'double' to 'const unsigned int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\genome.cxx(195): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\genome.cxx(233): warning C4244: 'argument': conversion from 'double' to 'const unsigned int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\genome.cxx(246): warning C4244: 'argument': conversion from 'double' to 'const unsigned int', possible loss of data
   Stella.vcxproj -> C:\Users\Twitch-PCLaptop\Desktop\SeniorProject\galaxian_ga\stella-emu\src\windows\Debug\Stella.exe

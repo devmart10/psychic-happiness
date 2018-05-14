@@ -721,8 +721,6 @@ void OSystem::mainLoop()
 							myEventHandler->handleEvent(Event::Type::JoystickZeroLeft, outputs[BUTTON_LEFT] ? 1 : 0);
 							myEventHandler->handleEvent(Event::Type::JoystickZeroRight, outputs[BUTTON_RIGHT] ? 1 : 0);
 							myEventHandler->handleEvent(Event::Type::JoystickZeroFire, outputs[BUTTON_FIRE] ? 1 : 0);
-
-							printf("Left: %d, Right: %d, Fire: %d\n", outputs[0], outputs[1], outputs[2]);
 						}
 					}
 				}

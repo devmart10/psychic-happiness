@@ -71,6 +71,8 @@ Genome *Species::breedChild() {
 		child = new Genome(*genomes[rand() / (double)RAND_MAX * genomes.size()]);
 	}
 
+	child->mutate();
+
 	return child;
 }
 

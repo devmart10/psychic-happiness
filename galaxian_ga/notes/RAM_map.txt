@@ -7,7 +7,7 @@
 0xB4 - counter from 0 to 2, incremeting once every frame, then rolling around
 0xB5 - rows of enemies remaining. as soon as one line dies, it is removed from 0xB5
 0xB6 - columns of enemies on either side dead. controls how far left or right the columns will shift one way or the other before they switch strafing directions
-0xB7 - ???
+0xB7 - ??? - seems to be permanently set to 0
 0xB8 - ??? - seems to be permanently set to 0
 0xB9 - player lives remaining. starts at 3 until player first spawns, so first wave, player has 2 and last life = 0
 0xBA - ??? - seems to be permanently set to 0

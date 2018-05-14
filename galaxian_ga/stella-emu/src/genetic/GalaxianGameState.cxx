@@ -90,6 +90,12 @@ int GalaxianGameState::getPlayerScore() {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+void GalaxianGameState::killPlayer() {
+	myConsole->placeByte(0xB2, 0x1);
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 bool GalaxianGameState::isPlayerDead() {
 	return myConsole->retreiveByte(0xB2) != 0;
 }
@@ -108,12 +114,22 @@ vector<double> GalaxianGameState::getInputs() {
 
 	inputs.push_back(getPlayerPosition());
 	inputs.push_back(isPlayerBulletActive());
+
+	/* the six locations in memory containing enemy x and y locations */
 	inputs.push_back(enemyLocations[0].first);
 	inputs.push_back(enemyLocations[0].second);
 	inputs.push_back(enemyLocations[1].first);
 	inputs.push_back(enemyLocations[1].second);
 	inputs.push_back(enemyLocations[2].first);
 	inputs.push_back(enemyLocations[2].second);
+
+	/* which enemies are still alive */
+	for (int i = 0xA6; i <= 0xAB; i++) {
+		for (int j = 0; j < 7; j++) {
+			inputs.push_back(myConsole->retreivePartialByte(i, 1, j));
+		}
+	}
+	inputs.push_back(myConsole->retreiveByte(0xB6));
 
 	return inputs;
 }

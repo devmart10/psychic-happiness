@@ -14,6 +14,7 @@ public:
 	~GalaxianGameState();
 
 	int getPlayerScore();
+	void killPlayer();
 	bool isPlayerDead();
 	bool isPlayerBulletActive();
 	bool isGameRunning();

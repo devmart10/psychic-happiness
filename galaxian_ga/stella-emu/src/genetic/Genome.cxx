@@ -10,7 +10,7 @@
 #include "genetic_settings.hxx"
 
 #define MUTATE_CONNECTIONS_CHANCE 0.25
-#define MUTATE_LINK_CHANCE 2.0
+#define MUTATE_LINK_CHANCE 4.0
 #define MUTATE_BIAS_CHANCE 0.4
 #define MUTATE_NODE_CHANCE 0.5
 #define MUTATE_ENABLE_CHANCE 0.2
@@ -47,7 +47,8 @@ Genome::Genome(Pool *_pool) :
 Genome::Genome(const Genome &old) :
 	maxNeuron(old.maxNeuron),
 	mutationRates(old.mutationRates),
-	genes(old.genes)
+	genes(old.genes),
+	pool(old.pool)
 {
 }
 
@@ -81,7 +82,7 @@ void Genome::mutate() {
 		pointMutate();
 	}
 
-	int p = mutationRates["link"];
+	double p = mutationRates["link"];
 	while (p-- > 0) {
 		if (rand() / (double)RAND_MAX < p) {
 			linkMutate(false);
@@ -191,7 +192,7 @@ int randomNeuron(vector<Gene *> genes, bool isInput) {
 		}
 	}
 
-	int n = (rand() / (double)RAND_MAX) * neurons.size();
+	int n = (rand() / (double)RAND_MAX) * neurons.size() + 1;
 
 	for (pair<int, bool> p : neurons) {
 		if (--n == 0) {
