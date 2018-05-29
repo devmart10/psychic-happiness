@@ -1,3 +1,4 @@
+0xA0 - A5 - ???
 0xA6 - AB - top to bottom rows. each of the lowest 7 set bits corresponds to is enemy active
 0xAC - AE - player score. each digit of score is stored in 4 bits, starting with 0xAC high 4 bits
 0xAF - wave number - controls number of enemies flying and number in bottom right
@@ -19,5 +20,5 @@
 0xE5 - something with player death, like a timer counting back from 0xFF
 0xE6 - something set when a new enemy decides to charge
 0xE7 - something to do with enemy bullet? at least part of the byte
-
 E9-EA ? nothing?
+0xEB - FF - ???

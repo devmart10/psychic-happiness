@@ -251,13 +251,13 @@ void Genome::nodeMutate() {
 	Gene *gene1 = new Gene(*gene);
 	gene1->out = maxNeuron;
 	gene1->weight = 1.0;
-	gene1->innovation = 1; //TODO
+	gene1->innovation = pool->newInnovation();
 	gene1->enabled = true;
 	genes.push_back(gene1);
 
 	Gene *gene2 = new Gene(*gene);
 	gene2->into = maxNeuron;
-	gene2->innovation = 1; //TODO
+	gene2->innovation = pool->newInnovation();
 	gene2->enabled = true;
 	genes.push_back(gene2);
 }

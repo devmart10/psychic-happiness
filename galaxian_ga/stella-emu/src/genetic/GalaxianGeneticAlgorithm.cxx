@@ -65,7 +65,8 @@ map<int, bool> GalaxianGeneticAlgorithm::evaluate() {
 	}
 
 	if (framesSinceLastKill++ > 60) {
-		myGalaxianGameState->killPlayer();
+		if (!(GetKeyState(VK_CAPITAL) & 0x1) && currentScore < 500)
+			myGalaxianGameState->killPlayer();
 	}
 
 	if (outputs[BUTTON_LEFT] && outputs[BUTTON_RIGHT]) {

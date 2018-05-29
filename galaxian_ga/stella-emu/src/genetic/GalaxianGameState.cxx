@@ -124,12 +124,14 @@ vector<double> GalaxianGameState::getInputs() {
 	inputs.push_back(enemyLocations[2].second);
 
 	/* which enemies are still alive */
+	/*
 	for (int i = 0xA6; i <= 0xAB; i++) {
 		for (int j = 0; j < 7; j++) {
 			inputs.push_back(myConsole->retreivePartialByte(i, 1, j));
 		}
 	}
 	inputs.push_back(myConsole->retreiveByte(0xB6));
+	*/
 
 	return inputs;
 }
