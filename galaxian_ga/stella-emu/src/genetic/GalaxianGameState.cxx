@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Console.hxx"
+
 #include "GalaxianGameState.hxx"
 
 using namespace std;

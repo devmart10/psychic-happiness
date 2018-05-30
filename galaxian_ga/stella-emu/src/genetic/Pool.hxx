@@ -1,9 +1,10 @@
 #pragma once
 
+#include "GeneticJSON.hxx"
+
+class GeneticJSON;
 class Genome;
 class Species;
-
-#include <vector>
 
 class Pool {
 
@@ -33,5 +34,6 @@ public:
 	double maxFitness;
 
 private:
+	GeneticJSON geneticJson;
 
 };

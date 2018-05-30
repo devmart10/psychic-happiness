@@ -3,10 +3,10 @@
 
 #define MAX_ENEMIES 4
 
+#include <vector>
+
 class Console;
 class Point;
-
-#include <vector>
 
 class GalaxianGameState {
 public:

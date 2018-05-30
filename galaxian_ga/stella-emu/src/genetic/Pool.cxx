@@ -1,10 +1,12 @@
-#include "Pool.hxx"
 #include "genetic_settings.hxx"
 #include "Species.hxx"
 #include "Genome.hxx"
 #include "Gene.hxx"
 
+#include <vector>
 #include <algorithm>
+
+#include "Pool.hxx"
 
 #define DELTA_DISJOINT 2.0
 #define DELTA_WEIGHTS 0.4
@@ -27,7 +29,8 @@ Pool::Pool() :
 	currentSpecies(0),
 	currentGenome(0),
 	maxFitness(0),
-	innovation(NUM_OUTPUTS)
+	innovation(NUM_OUTPUTS),
+	geneticJson(this)
 {
 	for (int i = 0; i < POPULATION_SIZE; i++) {
 		Genome *genome = new Genome(this);
@@ -268,11 +271,14 @@ void Pool::createNewGeneration() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void Pool::nextGenome() {
-	double curFitness = species[currentSpecies]->genomes[currentGenome]->fitness;
+	Genome *curGenome = species[currentSpecies]->genomes[currentGenome];
+	double curFitness = curGenome->fitness;
 
 	if (curFitness > maxFitness) {
 		maxFitness = curFitness;
 	}
+
+	geneticJson.exportGenome(currentSpecies, currentGenome, curGenome);
 
 	if (++currentGenome >= species[currentSpecies]->genomes.size()) {
 		currentGenome = 0;

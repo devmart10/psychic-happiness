@@ -1,9 +1,9 @@
 #pragma once
 
+#include <vector>
+
 class Genome;
 class Pool;
-
-#include <vector>
 
 class Species {
 

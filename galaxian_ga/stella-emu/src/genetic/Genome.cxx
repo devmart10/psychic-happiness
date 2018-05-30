@@ -2,12 +2,13 @@
 #include <Windows.h>
 #include <memory>
 
+#include "GalaxianGameState.hxx"
 #include "Gene.hxx"
 #include "Neuron.hxx"
-#include "Genome.hxx"
 #include "Pool.hxx"
-
 #include "genetic_settings.hxx"
+
+#include "Genome.hxx"
 
 #define MUTATE_CONNECTIONS_CHANCE 0.25
 #define MUTATE_LINK_CHANCE 4.0
@@ -28,7 +29,6 @@ bool containsLink(vector<Gene *> genes, Gene *g);
 
 Genome::Genome(Pool *_pool) :
 	fitness(0),
-	adjustedFitness(0),
 	maxNeuron(0),
 	globalRank(0),
 	pool(_pool)

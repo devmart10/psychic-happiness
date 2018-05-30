@@ -1,16 +1,19 @@
 #ifndef GENOME_HXX
 #define GENOME_HXX
 
-#include <memory>
 #include <vector>
 #include <map>
 
-#include "GalaxianGameState.hxx"
+#ifndef JSON_INCLUDE
+#define JSON_INCLUDE
+#include <nlohmann\json.hpp>
+#endif
 
 class GalaxianGameState;
 class Gene;
 class Neuron;
 class Pool;
+class json;
 
 class Genome {
 public:
@@ -31,7 +34,6 @@ public:
 
 	std::vector<Gene *> genes;
 	double fitness;
-	double adjustedFitness;
 	int innovation;
 	std::map<int, Neuron *> network;
 	int maxNeuron;

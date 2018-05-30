@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "Gene.hxx"
 
 using namespace std;

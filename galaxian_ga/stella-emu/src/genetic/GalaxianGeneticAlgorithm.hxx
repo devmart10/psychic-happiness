@@ -18,14 +18,10 @@
 #ifndef GALAXIAN_GENETIC_ALGORITHM_HXX
 #define GALAXIAN_GENETIC_ALGORITHM_HXX
 
-#include <memory>
-#include "EventHandler.hxx"
-#include "OSystem.hxx"
-#include "genetic_settings.hxx"
-#include "GalaxianGameState.hxx"
-
 class Neuron;
 class Pool;
+class GalaxianGameState;
+class Console;
 
 class GalaxianGeneticAlgorithm {
 public:	

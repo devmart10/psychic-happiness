@@ -20,11 +20,17 @@
 #include <memory>
 
 #include "bspf.hxx"
-#include "GalaxianGeneticAlgorithm.hxx"
 #include "Pool.hxx"
 #include "Species.hxx"
 #include "Genome.hxx"
 #include "Console.hxx"
+
+#include "EventHandler.hxx"
+#include "OSystem.hxx"
+#include "genetic_settings.hxx"
+#include "GalaxianGameState.hxx"
+
+#include "GalaxianGeneticAlgorithm.hxx"
 
 using namespace std;
 

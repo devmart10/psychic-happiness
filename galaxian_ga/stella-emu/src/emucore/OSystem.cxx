@@ -38,6 +38,7 @@
 #ifdef GENETIC_ENABLED
 #include "GalaxianGeneticAlgorithm.hxx"
 #include "GalaxianGameState.hxx"
+#include "genetic_settings.hxx"
 #endif
 
 #include "FSNode.hxx"

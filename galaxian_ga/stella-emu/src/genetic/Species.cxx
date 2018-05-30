@@ -1,8 +1,9 @@
-#include "Species.hxx"
 #include "Genome.hxx"
 #include "Gene.hxx"
 #include "Pool.hxx"
 #include <algorithm>
+
+#include "Species.hxx"
 
 #define CROSSOVER_CHANCE 0.75
 

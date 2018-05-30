@@ -110,7 +110,7 @@
     <ClCompile>
       <AdditionalOptions>/MP /std:c++latest %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\yacc;..\genetic;..\emucore;..\emucore\tia;..\emucore\tia\frame-manager;..\common;..\common\tv_filters;..\gui;..\debugger\gui;..\debugger;..\windows;..\cheat;..\zlib;..\libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\json-develop\single_include;..\yacc;..\genetic;..\emucore;..\emucore\tia;..\emucore\tia\frame-manager;..\common;..\common\tv_filters;..\gui;..\debugger\gui;..\debugger;..\windows;..\cheat;..\zlib;..\libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GENETIC_ENABLED;BSPF_WINDOWS;WIN32;NDEBUG;JOYSTICK_SUPPORT;DEBUGGER_SUPPORT;WINDOWED_SUPPORT;SOUND_SUPPORT;CHEATCODE_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -344,6 +344,7 @@
     <ClCompile Include="..\genetic\GalaxianGameState.cxx" />
     <ClCompile Include="..\genetic\GalaxianGeneticAlgorithm.cxx" />
     <ClCompile Include="..\genetic\Gene.cxx" />
+    <ClCompile Include="..\genetic\GeneticJSON.cxx" />
     <ClCompile Include="..\genetic\Genome.cxx" />
     <ClCompile Include="..\genetic\Neuron.cxx" />
     <ClCompile Include="..\genetic\Pool.cxx" />
@@ -657,6 +658,7 @@
     <ClInclude Include="..\genetic\GalaxianGameState.hxx" />
     <ClInclude Include="..\genetic\GalaxianGeneticAlgorithm.hxx" />
     <ClInclude Include="..\genetic\Gene.hxx" />
+    <ClInclude Include="..\genetic\GeneticJSON.hxx" />
     <ClInclude Include="..\genetic\genetic_settings.hxx" />
     <ClInclude Include="..\genetic\Genome.hxx" />
     <ClInclude Include="..\genetic\Neuron.hxx" />
