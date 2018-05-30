@@ -38,10 +38,18 @@ GeneticJSON::GeneticJSON(Pool *_pool) :
 
 	runId = string(buffer);
 
-	if (CreateDirectory(("../../../runs/" + runId).c_str(), NULL) || ERROR_ALREADY_EXISTS == GetLastError())
+	if (CreateDirectory("../../../runs", NULL) || ERROR_ALREADY_EXISTS == GetLastError())
 	{
-		exportPossible = true;
-		printf("Run %s\n", runId);
+		if (CreateDirectory(("../../../runs/" + runId).c_str(), NULL) || ERROR_ALREADY_EXISTS == GetLastError())
+		{
+			exportPossible = true;
+			printf("Run %s\n", runId);
+		}
+		else
+		{
+			exportPossible = false;
+			printf("Creating directory failed... Ignoring future JSON calls...\n");
+		}
 	}
 	else
 	{
