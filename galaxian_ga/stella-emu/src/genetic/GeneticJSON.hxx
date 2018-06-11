@@ -9,7 +9,7 @@ class GeneticJSON {
 public:
 	GeneticJSON(Pool *);
 
-	void exportGenome(int speciesId, int genomeId, Genome *genome);
+	void exportGenome(int generationId, int speciesId, int genomeId, Genome *genome);
 	Genome *importGenome(std::string path);
 
 private:

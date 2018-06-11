@@ -58,10 +58,12 @@ GeneticJSON::GeneticJSON(Pool *_pool) :
 	}
 }
 
-void GeneticJSON::exportGenome(int speciesId, int genomeId, Genome *genome) {
+void GeneticJSON::exportGenome(int generationId, int speciesId, int genomeId, Genome *genome) {
 	if (exportPossible) {
-		string speciesDirectory = "../../../runs/" + runId + "/Species_" + to_string(speciesId);
+		string generationDirectory = "../../../runs/" + runId + "/Generation_" + to_string(generationId);
+		string speciesDirectory = generationDirectory + "/Species_" + to_string(speciesId);
 
+		CreateDirectory(generationDirectory.c_str(), NULL);
 		CreateDirectory(speciesDirectory.c_str(), NULL);
 
 		ofstream outfile(speciesDirectory + "/Genome_" + to_string(genomeId));

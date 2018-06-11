@@ -278,7 +278,7 @@ void Pool::nextGenome() {
 		maxFitness = curFitness;
 	}
 
-	geneticJson.exportGenome(currentSpecies, currentGenome, curGenome);
+	geneticJson.exportGenome(generation, currentSpecies, currentGenome, curGenome);
 
 	if (++currentGenome >= species[currentSpecies]->genomes.size()) {
 		currentGenome = 0;

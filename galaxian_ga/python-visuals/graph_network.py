@@ -32,7 +32,7 @@ def walk_directory(d_main):
 
 def create_network_graph(data_file, output_file):
     data = {}
-    pp('opening: %s' % filename)
+    pp('opening: %s' % data_file)
     with open(data_file, 'r') as f:
         data = json.load(f)
     network = data['network']
