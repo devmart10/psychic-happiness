@@ -141,7 +141,9 @@ void Genome::linkMutate(bool forceBias) {
 
 	Gene *newLink = new Gene();
 
-	if (n1 <= NUM_INPUTS && n2 <= NUM_INPUTS) {
+	if ((n1 <= NUM_INPUTS && n2 <= NUM_INPUTS) ||
+		(n1 >= MAX_NODES && n2 >= MAX_NODES)   ||
+		(n1 == n2)) {
 		return;
 	}
 
@@ -155,7 +157,7 @@ void Genome::linkMutate(bool forceBias) {
 	newLink->out = n2;
 
 	if (forceBias) {
-		newLink->into = NUM_INPUTS;
+		newLink->into = NUM_INPUTS - 1;
 	}
 
 	if (containsLink(genes, newLink)) {

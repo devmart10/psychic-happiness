@@ -37,6 +37,8 @@ Pool::Pool() :
 		genome->initBasicGenome();
 		addToSpecies(genome);
 	}
+
+	srand(time(NULL));
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -236,7 +238,7 @@ void Pool::removeWeakSpecies() {
 void Pool::createNewGeneration() {
 	cullSpecies(false);
 	rankGlobally();
-	removeStaleSpecies();
+	//removeStaleSpecies();
 	rankGlobally();
 
 	for (Species *s : species) {

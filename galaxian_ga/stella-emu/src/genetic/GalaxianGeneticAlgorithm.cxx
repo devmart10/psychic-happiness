@@ -87,7 +87,7 @@ map<int, bool> GalaxianGeneticAlgorithm::evaluate() {
 void GalaxianGeneticAlgorithm::startSession()
 {
 	myPool->initializeRun();
-	// TODO: Get rid of these magic numbers
+
 	sessionTimeFitness = 0;
 	scoreHolder = 0;
 	framesSinceLastKill = 0;

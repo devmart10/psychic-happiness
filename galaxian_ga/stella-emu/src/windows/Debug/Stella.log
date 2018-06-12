@@ -1,3 +1,12 @@
-﻿  GeneticJSON.cxx
-c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\geneticjson.cxx(46): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'std::string'
+﻿  Pool.cxx
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(90): warning C4244: 'argument': conversion from 'double' to 'const int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(93): warning C4244: 'argument': conversion from 'double' to 'const int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(98): warning C4244: 'argument': conversion from 'double' to 'const int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(103): warning C4244: 'argument': conversion from 'double' to 'const int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(117): warning C4244: 'argument': conversion from 'double' to 'const int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(123): warning C4244: 'argument': conversion from 'double' to 'const int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(124): warning C4244: 'argument': conversion from 'double' to 'const int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(125): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(145): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\twitch-pclaptop\desktop\seniorproject\galaxian_ga\stella-emu\src\genetic\pool.cxx(261): warning C4244: 'argument': conversion from 'double' to 'const unsigned int', possible loss of data
   Stella.vcxproj -> C:\Users\Twitch-PCLaptop\Desktop\SeniorProject\galaxian_ga\stella-emu\src\windows\Debug\Stella.exe

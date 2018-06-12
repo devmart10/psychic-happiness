@@ -124,6 +124,9 @@ vector<double> GalaxianGameState::getInputs() {
 	inputs.push_back(enemyLocations[2].first);
 	inputs.push_back(enemyLocations[2].second);
 
+	/* push the bias */
+	inputs.push_back(0);
+
 	/* which enemies are still alive */
 	/*
 	for (int i = 0xA6; i <= 0xAB; i++) {
