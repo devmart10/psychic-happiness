@@ -30,13 +30,16 @@ Pool::Pool() :
 	currentGenome(0),
 	maxFitness(0),
 	innovation(NUM_OUTPUTS),
-	geneticJson(this)
+	geneticJson(this),
+	loaded(false)
 {
 	for (int i = 0; i < POPULATION_SIZE; i++) {
 		Genome *genome = new Genome(this);
 		genome->initBasicGenome();
 		addToSpecies(genome);
 	}
+
+	srand(time(NULL));
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -274,11 +277,15 @@ void Pool::nextGenome() {
 	Genome *curGenome = species[currentSpecies]->genomes[currentGenome];
 	double curFitness = curGenome->fitness;
 
+	if (loaded) {
+		exit(0);
+	}
+
 	if (curFitness > maxFitness) {
 		maxFitness = curFitness;
 	}
 
-	geneticJson.exportGenome(currentSpecies, currentGenome, curGenome);
+	geneticJson.exportGenome(generation, currentSpecies, currentGenome, curGenome);
 
 	if (++currentGenome >= species[currentSpecies]->genomes.size()) {
 		currentGenome = 0;
@@ -290,6 +297,22 @@ void Pool::nextGenome() {
 			currentSpecies = 0;
 		}
 	}
+
+	if (generation > 19) {
+		exit(0);
+	}
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+void Pool::loadRun() {
+	Genome *loadedGenome = geneticJson.importGenome();
+
+	species[currentSpecies]->genomes.clear();
+	species[currentSpecies]->genomes.push_back(loadedGenome);
+
+	currentGenome = 0;
+	loaded = true;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

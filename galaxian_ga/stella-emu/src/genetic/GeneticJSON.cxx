@@ -58,10 +58,12 @@ GeneticJSON::GeneticJSON(Pool *_pool) :
 	}
 }
 
-void GeneticJSON::exportGenome(int speciesId, int genomeId, Genome *genome) {
+void GeneticJSON::exportGenome(int generationId, int speciesId, int genomeId, Genome *genome) {
 	if (exportPossible) {
-		string speciesDirectory = "../../../runs/" + runId + "/Species_" + to_string(speciesId);
+		string generationDirectory = "../../../runs/" + runId + "/Generation_" + to_string(generationId);
+		string speciesDirectory = generationDirectory + "/Species_" + to_string(speciesId);
 
+		CreateDirectory(generationDirectory.c_str(), NULL);
 		CreateDirectory(speciesDirectory.c_str(), NULL);
 
 		ofstream outfile(speciesDirectory + "/Genome_" + to_string(genomeId));
@@ -115,11 +117,14 @@ void neuronToJson(nlohmann::json &myJson, int id, Neuron *neuron, vector<Gene *>
 	}
 }
 
-/*
-Genome *GeneticJSON::importGenome(string path) {
+Genome *GeneticJSON::importGenome() {
 	Genome *genome = new Genome(pool);
-	std::ifstream infile(path);
+	std::ifstream infile(GENETIC_LOAD_STRING);
 	nlohmann::json myJson;
+
+	if (!infile) {
+		exit(1);
+	}
 
 	infile >> myJson;
 
@@ -132,10 +137,18 @@ Genome *GeneticJSON::importGenome(string path) {
 		genome->genes.push_back(geneFromJson(*it));
 	}
 
+	genome->network = neuronsFromJson(myJson, genome->genes);
+
+	for (auto it = myJson["mutationRates"].begin(); it != myJson["mutationRates"].end(); ++it) {
+		genome->mutationRates[it.key()] = it.value();
+	}
+
+	infile.close();
+
 	return genome;
 }
 
-Gene *geneFromJson(nlohmann::json myJson) {
+Gene *GeneticJSON::geneFromJson(nlohmann::json myJson) {
 	Gene *gene = new Gene();
 
 	gene->into = myJson["into"];
@@ -147,15 +160,25 @@ Gene *geneFromJson(nlohmann::json myJson) {
 	return gene;
 }
 
-Neuron *neuronFromJson(nlohmann::json myJson) {
+map<int, Neuron *> GeneticJSON::neuronsFromJson(nlohmann::json myJson, vector<Gene *> genes) {
+	map<int, Neuron *> retMap;
 	Neuron *neuron = new Neuron();
 
-	neuron->value = myJson["value"];
+	for (auto it = myJson["network"].begin(); it != myJson["network"].end(); ++it) {
+		int id = stoi(it.key());
+		neuron->value = it.value()["value"];
+		try {
+			vector<int> inc = it.value()["incoming"];
+			for (int i : inc) {
+				neuron->incoming.push_back(genes.at(i));
+			}
+		}
+		catch (nlohmann::detail::type_error e) {
+			// no incoming
+		}
 
-	for (nlohmann::json::iterator it = myJson["incoming"].begin(); it != myJson["incoming"].end(); ++it) {
-
+		retMap[id] = neuron;
 	}
 
-	return neuron;
+	return retMap;
 }
-*/

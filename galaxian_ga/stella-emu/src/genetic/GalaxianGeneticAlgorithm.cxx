@@ -87,11 +87,13 @@ map<int, bool> GalaxianGeneticAlgorithm::evaluate() {
 void GalaxianGeneticAlgorithm::startSession()
 {
 	myPool->initializeRun();
-	// TODO: Get rid of these magic numbers
+
 	sessionTimeFitness = 0;
 	scoreHolder = 0;
 	framesSinceLastKill = 0;
 }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void GalaxianGeneticAlgorithm::finishSession()
 {
@@ -102,6 +104,12 @@ void GalaxianGeneticAlgorithm::finishSession()
 		myPool->currentSpecies, myPool->currentGenome, (int)curGenome->fitness);
 
 	myPool->nextGenome();
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+void GalaxianGeneticAlgorithm::loadSession() {
+	myPool->loadRun();
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -132,6 +140,28 @@ bool GalaxianGeneticAlgorithm::isResetKeyDown() {
 	static bool pressedLastFrame = false;
 
 	if (GetKeyState('R') & 0x8000) {
+		if (pressedLastFrame) {
+			return false;
+		}
+		else {
+			pressedLastFrame = true;
+
+			return true;
+		}
+	}
+	else {
+		pressedLastFrame = false;
+	}
+
+	return false;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+bool GalaxianGeneticAlgorithm::isLoadKeyDown() {
+	static bool pressedLastFrame = false;
+
+	if (GetKeyState('P') & 0x8000) {
 		if (pressedLastFrame) {
 			return false;
 		}

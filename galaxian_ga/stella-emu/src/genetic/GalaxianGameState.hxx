@@ -20,6 +20,7 @@ public:
 	bool isGameRunning();
 	int getPlayerPosition();
 	std::vector<std::pair<int, int>> getEnemyPositions();
+	std::pair<int, int> getChargerPosition();
 
 	void reset();
 	void tick();

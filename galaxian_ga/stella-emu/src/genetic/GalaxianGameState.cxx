@@ -36,8 +36,8 @@ void GalaxianGameState::tick() {
 			enemyPosMem[i].second = myConsole->retreiveByte(0xC5 + i);
 		}
 
-		if (enemyPosMem[enemyPosMemOffset].second == 0) {
-			enemyPosMemOffset = --enemyPosMemOffset < 0 ? enemyPosMemOffset : 2;
+		if (enemyPosMem[enemyPosMemOffset].second == 0 || enemyPosMem[enemyPosMemOffset].second == 240) {
+			if (--enemyPosMemOffset < 0) enemyPosMemOffset = 2;
 		}
 	}
 	else {
@@ -68,6 +68,12 @@ vector<pair<int, int>> GalaxianGameState::getEnemyPositions() {
 	}
 
 	return enemyPositions;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+pair<int, int> GalaxianGameState::getChargerPosition() {
+	return enemyPosMem[enemyPosMemOffset];
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -111,18 +117,23 @@ bool GalaxianGameState::isPlayerBulletActive() {
 
 vector<double> GalaxianGameState::getInputs() {
 	vector<double> inputs;
-	vector<pair<int, int>> enemyLocations = getEnemyPositions();
+	pair<int, int> chargerPos = getChargerPosition();
+	int playerPos = getPlayerPosition();
 
-	inputs.push_back(getPlayerPosition());
+	inputs.push_back(playerPos);
 	inputs.push_back(isPlayerBulletActive());
 
 	/* the six locations in memory containing enemy x and y locations */
-	inputs.push_back(enemyLocations[0].first);
-	inputs.push_back(enemyLocations[0].second);
-	inputs.push_back(enemyLocations[1].first);
-	inputs.push_back(enemyLocations[1].second);
-	inputs.push_back(enemyLocations[2].first);
-	inputs.push_back(enemyLocations[2].second);
+
+	inputs.push_back(chargerPos.first);
+	inputs.push_back(chargerPos.second);
+
+	/* distance from player to enemy */
+	/*double distance = sqrt(pow(chargerPos.first - playerPos, 2) + pow(chargerPos.second - 10, 2));
+	inputs.push_back(distance);*/
+
+	/* push the bias */
+	inputs.push_back(rand() / (double)RAND_MAX);
 
 	/* which enemies are still alive */
 	/*

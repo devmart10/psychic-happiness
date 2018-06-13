@@ -3,3 +3,4 @@
 /galaxian_ga/stella-emu/src/windows
 *.vcxproj*
 *.vs/*
+/galaxian_ga/runs
