@@ -708,7 +708,7 @@ void OSystem::mainLoop()
 					if (framesSinceTick++ >= FRAMES_PER_UPDATE) {
 						framesSinceTick = 0;
 
-						if (myGalaxianGameState->isPlayerDead() || myGalaxianGeneticAlgorithm->isResetKeyDown()) {
+						if (myGalaxianGameState->isPlayerDead()) {
 							myGalaxianGeneticAlgorithm->finishSession();
 
 							myConsole->resetGame();
@@ -728,6 +728,15 @@ void OSystem::mainLoop()
 				else {
 					if (myGalaxianGeneticAlgorithm->isResetKeyDown()) {
 						myConsole->resetGame();
+
+						myEventHandler->handleEvent(Event::Type::JoystickZeroFire, 1);
+
+						gameStarted = true;
+					}
+					else if (myGalaxianGeneticAlgorithm->isLoadKeyDown()) {
+						myConsole->resetGame();
+
+						myGalaxianGeneticAlgorithm->loadSession();
 
 						myEventHandler->handleEvent(Event::Type::JoystickZeroFire, 1);
 

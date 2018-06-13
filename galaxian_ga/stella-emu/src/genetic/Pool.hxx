@@ -13,6 +13,7 @@ public:
 	~Pool();
 
 	void initializeRun();
+	void loadRun();
 	void createNewGeneration();
 
 	void cullSpecies(bool cutToOne);
@@ -32,6 +33,7 @@ public:
 	int currentSpecies;
 	int currentGenome;
 	double maxFitness;
+	bool loaded;
 
 private:
 	GeneticJSON geneticJson;

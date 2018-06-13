@@ -37,8 +37,10 @@ public:
 	void initializeAlgorithm();
 	void startSession();
 	void finishSession();
+	void loadSession();
 	bool isRShiftKeyDown();
 	bool isResetKeyDown();
+	bool isLoadKeyDown();
 	std::map<int, bool> evaluate();
 
 private:
